@@ -8,12 +8,12 @@
  This is a plugin that automatically creates a type file when using the css module type-safely.
 
 ## install
-```bas
+```bash
 npm i -D vite-plugin-sass-dts
 ```
 
 ## Add it to vite.config.ts
-```
+```ts
 import { defineConfig } from "vite";
 import sassDts from "vite-plugin-sass-dts";
 
