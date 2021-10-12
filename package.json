@@ -1,0 +1,39 @@
+{
+  "name": "vite-plugin-sass-dts",
+  "version": "1.0.0",
+  "description": "This is a plugin that automatically creates a type file when using the css module type-safely.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/activeguild/vite-plugin-sass-dts.git"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "css",
+    "scss",
+    "classnames",
+    "clsx",
+    "typescript",
+    "generics",
+    "cssmodules"
+  ],
+  "author": "j1ngzoue",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/activeguild/vite-plugin-sass-dts/issues"
+  },
+  "homepage": "https://github.com/activeguild/vite-plugin-sass-dts#readme",
+  "devDependencies": {
+    "@types/sass": "^1.16.1",
+    "postcss": "^8.3.9",
+    "postcss-js": "^3.0.3",
+    "sass": "^1.42.1",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.7"
+  }
+}

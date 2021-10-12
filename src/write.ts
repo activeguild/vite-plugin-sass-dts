@@ -1,0 +1,29 @@
+import fs from "fs";
+import { camelCase } from "./util";
+
+export const writeToFile = (
+  file: string,
+  classNameKeys: Map<string, boolean>
+) => {
+  let exportConsts = "";
+  let exportType = "";
+  for (const classNameKey of classNameKeys.keys()) {
+    exportConsts = `${exportConsts}${formatExportConst(classNameKey)}\n`;
+    exportType = exportType
+      ? `${exportType} | '${classNameKey}'`
+      : `export type Classes = '${classNameKey}'`;
+  }
+
+  fs.writeFile(
+    formatWriteFileName(file),
+    `${exportConsts}\n${exportType}`,
+    (err) => {
+      if (err) throw err;
+    }
+  );
+};
+
+export const formatExportConst = (key: string) =>
+  `export const ${camelCase(key)} = '${key}'`;
+
+export const formatWriteFileName = (file: string) => `${file}.d.ts`;
