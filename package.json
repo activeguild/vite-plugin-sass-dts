@@ -28,6 +28,9 @@
     "url": "https://github.com/activeguild/vite-plugin-sass-dts/issues"
   },
   "homepage": "https://github.com/activeguild/vite-plugin-sass-dts#readme",
+  "dependencies": {
+    "postcss-js": "^3.0.3"
+  },
   "devDependencies": {
     "@types/sass": "^1.16.1",
     "postcss": "^8.3.9",
