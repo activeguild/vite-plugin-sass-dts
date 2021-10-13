@@ -76,5 +76,5 @@ export const appLogo = 'App-logo'
 export const appHeader = 'App-header'
 export const appLink = 'App-link'
 
-export type Classes = 'App' | 'App-logo' | 'App-header' | 'App-link'
+export type ClassNames = 'App' | 'App-logo' | 'App-header' | 'App-link'
 ```
