@@ -11,7 +11,7 @@ export const writeToFile = (
     exportConsts = `${exportConsts}${formatExportConst(classNameKey)}\n`;
     exportType = exportType
       ? `${exportType} | '${classNameKey}'`
-      : `export type ClassNames = '${classNameKey}'`;
+      : `export type ClassNames2 = '${classNameKey}'`;
   }
 
   fs.writeFile(
