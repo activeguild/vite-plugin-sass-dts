@@ -5,6 +5,10 @@ export const writeToFile = (
   file: string,
   classNameKeys: Map<string, boolean>
 ) => {
+  if (classNameKeys.size === 0) {
+    return;
+  }
+
   let exportConsts = "";
   let exportType = "";
   for (const classNameKey of classNameKeys.keys()) {
