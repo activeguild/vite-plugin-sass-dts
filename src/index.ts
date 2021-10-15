@@ -11,7 +11,8 @@ export default function Plugin(): Plugin {
   return {
     name: "vite-plugin-sass-dts",
     handleHotUpdate(context) {
-      if (!context.file.endsWith("scss")) return;
+      if (!context.file.endsWith("scss") && !context.file.endsWith("sass"))
+        return;
 
       try {
         fs.readFile(context.file, (err, file) => {
