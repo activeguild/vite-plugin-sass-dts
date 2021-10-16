@@ -4,7 +4,7 @@ import postcss from "postcss";
 import { extractClassNameKeys } from "./extract";
 import { writeToFile } from "./write";
 import fs from "fs";
-import { parseCss } from "css";
+import { parseCss } from "./css";
 
 export default function Plugin(): Plugin {
   return {
@@ -24,7 +24,7 @@ export default function Plugin(): Plugin {
           } else {
             const css = context.file.endsWith(".css")
               ? file.toString()
-              : parseCss(file, context);
+              : await parseCss(file, context);
             const classNameKeys = extractClassNameKeys(
               postcssJs.objectify(postcss.parse(css))
             );
