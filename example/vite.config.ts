@@ -8,6 +8,12 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `@use "@/stylesheets/variables" as var;`,
+        // additionalData: (content: string, path: string): string => {
+        //   return [
+        //     '@use "@/stylesheets/variables" as var;',
+        //     content,
+        //   ].join('\n');
+        // },
         importer(...args) {
           if (args[0] !== "@/stylesheets/variables") {
             return;
