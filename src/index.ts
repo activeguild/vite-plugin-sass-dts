@@ -5,17 +5,13 @@ import { extractClassNameKeys } from "./extract";
 import { writeToFile } from "./write";
 import fs from "fs";
 import { parseCss } from "./css";
+import { isCSSRequest } from "./util";
 
 export default function Plugin(): Plugin {
   return {
     name: "vite-plugin-sass-dts",
     handleHotUpdate(context) {
-      if (
-        !context.file.endsWith(".css") &&
-        !context.file.endsWith(".scss") &&
-        !context.file.endsWith(".sass")
-      )
-        return;
+      if (!isCSSRequest(context.file)) return;
 
       try {
         fs.readFile(context.file, async (err, file) => {

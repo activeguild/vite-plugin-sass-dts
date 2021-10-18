@@ -4,3 +4,10 @@ export const camelCase = (str: string) => {
     return group1.toUpperCase();
   });
 };
+
+// export const cssLangs = `\\.(css|less|sass|scss|styl|stylus|pcss|postcss)($|\\?)`;
+export const cssLangs = `\\.(css|sass|scss)($|\\?)`;
+export const cssLangReg = new RegExp(cssLangs);
+
+export const isCSSRequest = (request: string): boolean =>
+  cssLangReg.test(request);

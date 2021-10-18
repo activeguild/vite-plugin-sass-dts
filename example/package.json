@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "local:link": "npm link vite-plugin-sass-dts",
+    "local:start": "npm run local:link && npm run dev"
   },
   "author": "",
   "license": "ISC",
