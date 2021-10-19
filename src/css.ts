@@ -1,14 +1,18 @@
 import { getPreprocessorOptions } from "./options";
 import { renderSync } from "sass";
 import { AdditionalData } from "./type";
-import { HmrContext } from "vite";
+import { UserConfig } from "vite";
 
-export const parseCss = async (file: Buffer, context: HmrContext) => {
+export const parseCss = async (
+  file: Buffer,
+  fileName: string,
+  config: UserConfig
+) => {
   const { additionalData, includePaths, importer } =
-    getPreprocessorOptions(context);
+    getPreprocessorOptions(config);
 
   const result = renderSync({
-    data: await getData(file.toString(),context.file, additionalData),
+    data: await getData(file.toString(), fileName, additionalData),
     includePaths,
     importer,
   });

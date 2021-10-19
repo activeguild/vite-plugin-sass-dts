@@ -29,5 +29,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [react(), sassDts()],
+  plugins: [react(), sassDts({ allGenerate: true })],
 });

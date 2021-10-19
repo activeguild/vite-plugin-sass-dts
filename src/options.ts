@@ -1,15 +1,15 @@
-import { HmrContext } from "vite";
+import { UserConfig } from "vite";
 
-export const getPreprocessorOptions = (context: HmrContext) => {
+export const getPreprocessorOptions = (config: UserConfig) => {
   let additionalData, includePaths, importer;
 
   if (
-    !context.server.config.css ||
-    !context.server.config.css.preprocessorOptions ||
-    !context.server.config.css.preprocessorOptions.scss
+    !config.css ||
+    !config.css.preprocessorOptions ||
+    !config.css.preprocessorOptions.scss
   ) {
     return { additionalData, includePaths, importer };
   }
 
-  return context.server.config.css.preprocessorOptions.scss;
+  return config.css.preprocessorOptions.scss;
 };
