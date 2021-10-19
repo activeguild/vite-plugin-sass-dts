@@ -20,7 +20,7 @@ export default function Plugin({ allGenerate }: Option): Plugin {
       main(context.file, cacheConfig);
       return;
     },
-    transform(code, id, ssr) {
+    transform(code, id) {
       if (!allGenerate) {
         return { code };
       }

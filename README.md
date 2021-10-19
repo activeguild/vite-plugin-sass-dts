@@ -6,6 +6,7 @@
 
 # vite-plugin-sass-dts
  This is a plugin that automatically creates a type file when using the css module type-safely.
+The output type definition can be developed more type-safely by using it together with a library such as [classnames-generics](https://www.npmjs.com/package/classnames-generics).
 
 ## install
 ```bash
