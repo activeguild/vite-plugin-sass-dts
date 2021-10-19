@@ -12,6 +12,12 @@
 npm i -D vite-plugin-sass-dts
 ```
 
+## Options
+
+| Parameter | Type             | Description                                                                     |
+| --------- | ---------------- | ------------------------------------------------------------------------------- |
+| allGenerate | boolean | Create all d.ts files of the css, sass, scss files included in the project at build time.<br />We recommend that you turn off the flag once you have created the d.ts file, as it will take a long time to build.                            |
+
 ## Add it to vite.config.ts
 ```ts
 import { defineConfig } from "vite";
@@ -25,6 +31,13 @@ export default defineConfig({
 ```
 
 ## Usage
+You can create a dts file by saving the scss file during development.
+
+```bash
+npm run dev
+```
+
+For example, when you save the following file...
 
 ```scss:App.scss
 .App {
