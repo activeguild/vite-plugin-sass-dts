@@ -6,7 +6,6 @@
 
 # vite-plugin-sass-dts
  This is a plugin that automatically creates a type file when using the css module type-safely.
-The output type definition can be developed more type-safely by using it together with a library such as [classnames-generics](https://www.npmjs.com/package/classnames-generics).
 
 ## install
 ```bash
@@ -35,62 +34,98 @@ export default defineConfig({
 
 ## Usage
 You can create a dts file by saving the scss file during development.
+You can check the usage [example](https://github.com/activeguild/vite-plugin-sass-dts/tree/master/example) when the following options are set.
+Prepare the vite.config.ts file with the following options and start it in development mode.
+
+```ts
+[vite.config.ts]
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import sassDts from "vite-plugin-sass-dts";
+import path from "path";
+
+export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/stylesheets/variables" as var;`,
+        importer(...args) {
+          if (args[0] !== "@/stylesheets/variables") {
+            return;
+          }
+
+          return {
+            file: `${path.resolve(
+              __dirname,
+              "./src/assets/stylesheets/variables"
+            )}`,
+          };
+        },
+      },
+    },
+  },
+  plugins: [
+    react(),
+    sassDts({
+      allGenerate: true,
+      global: {
+        generate: true,
+        outFile: path.resolve(__dirname, "./src/style.d.ts"),
+      },
+    }),
+  ],
+});
+```
 
 ```bash
 npm run dev
 ```
 
-For example, when you save the following file...
+Then save the following file ...
 
-```scss:App.scss
-.App {
-  text-align: center;
-}
 
-p.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+```scss
+[src/assets/stylesheets/variables/_index.scss]
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
+```
 
-.App-link{
-  color: #61dafb;
-}
+```scss
+[src/App.module.scss]
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.header {
+  background-color: var.$primary;
+  .active {
+    background-color: black;
   }
 }
 ```
 
 Saving the scss file creates a d.ts file in the same hierarchy.
 
-```ts:App.scss.d.ts
-export const app = 'App'
-export const appLogo = 'App-logo'
-export const appHeader = 'App-header'
-export const appLink = 'App-link'
+```ts
+[src/App.scss.d.ts]
 
-export type ClassNames = 'App' | 'App-logo' | 'App-header' | 'App-link'
+export * from './style.d'
+import { GlobalClassNames } from './style.d'
+
+export const header = 'header'
+export const active = 'active'
+
+export type ClassNames = 'header' | 'active' | GlobalClassNames
 ```
+
+
+The type definition is output to the output path of the common style specified in the option.
+
+```ts
+[src/style.d.ts]
+
+export const row = 'row'
+
+export type GlobalClassNames = 'row'
+```
+
