@@ -1,3 +1,5 @@
+import path from "path";
+
 export const camelCase = (str: string) => {
   str = str.charAt(0).toLowerCase() + str.slice(1);
   return str.replace(/[-_](.)/g, (_, group1) => {
@@ -11,3 +13,8 @@ export const cssLangReg = new RegExp(cssLangs);
 
 export const isCSSRequest = (request: string): boolean =>
   cssLangReg.test(request);
+
+export const getRelativePath = (
+  from: string | undefined,
+  to: string | undefined
+) => path.relative(path.dirname(from || ""), path.dirname(to || "")) || "./";

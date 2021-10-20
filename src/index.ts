@@ -1,12 +1,9 @@
 import { Plugin, UserConfig, ConfigEnv } from "vite";
 import { isCSSRequest } from "./util";
 import { main } from "./main";
+import { PluginOption } from "./type";
 
-export type Option = {
-  allGenerate: boolean;
-};
-
-export default function Plugin({ allGenerate }: Option): Plugin {
+export default function Plugin(option: PluginOption): Plugin {
   let cacheConfig: UserConfig;
   let cacheEnv: ConfigEnv;
   return {
@@ -17,18 +14,18 @@ export default function Plugin({ allGenerate }: Option): Plugin {
     name: "vite-plugin-sass-dts",
     handleHotUpdate(context) {
       if (!isCSSRequest(context.file)) return;
-      main(context.file, cacheConfig);
+      main(context.file, cacheConfig, option);
       return;
     },
     transform(code, id) {
-      if (!allGenerate) {
+      if (!option.allGenerate) {
         return { code };
       }
 
       let fileName = id.replace("?used", "");
       if (!isCSSRequest(fileName)) return { code };
 
-      main(fileName, cacheConfig);
+      main(fileName, cacheConfig, option);
 
       return { code };
     },
