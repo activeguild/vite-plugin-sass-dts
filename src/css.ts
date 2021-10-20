@@ -1,13 +1,15 @@
 import { getPreprocessorOptions } from "./options";
 import { renderSync } from "sass";
-import { AdditionalData } from "./type";
+import { AdditionalData, CSS } from "./type";
 import { UserConfig } from "vite";
+
+const SPLIT_STR = `/* vite-plugin-sass-dts */\n`;
 
 export const parseCss = async (
   file: Buffer,
   fileName: string,
   config: UserConfig
-) => {
+): Promise<CSS> => {
   const { additionalData, includePaths, importer } =
     getPreprocessorOptions(config);
 
@@ -17,7 +19,8 @@ export const parseCss = async (
     importer,
   });
 
-  return result.css.toString();
+  const splitted = result.css.toString().split(SPLIT_STR);
+  return { localStyle: splitted[1], globalStyle: splitted[0] };
 };
 
 const getData = (
@@ -27,7 +30,7 @@ const getData = (
 ): string | Promise<string> => {
   if (!additionalData) return data;
   if (typeof additionalData === "function") {
-    return additionalData(data, filename);
+    return additionalData(`\n${SPLIT_STR}${data}`, filename);
   }
-  return `${additionalData} ${data}`;
+  return `${additionalData}\n${SPLIT_STR}${data}`;
 };
