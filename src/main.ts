@@ -17,20 +17,24 @@ export const main = (
       if (err) {
         console.error(err);
       } else {
-        const css: CSS = fileName.endsWith(".css")
-          ? { localStyle: file.toString() }
-          : await parseCss(file, fileName, config);
-        const classNameKeys = extractClassNameKeys(
-          postcssJs.objectify(postcss.parse(css.localStyle))
-        );
-        writeToFile(fileName, classNameKeys, false, option.global?.outFile);
-
-        if (!!css.globalStyle && option.global?.generate) {
-          const globalClassNameKeys = extractClassNameKeys(
-            postcssJs.objectify(postcss.parse(css.globalStyle))
+        try {
+          const css: CSS = fileName.endsWith(".css")
+            ? { localStyle: file.toString() }
+            : await parseCss(file, fileName, config);
+          const classNameKeys = extractClassNameKeys(
+            postcssJs.objectify(postcss.parse(css.localStyle))
           );
+          writeToFile(fileName, classNameKeys, false, option.global?.outFile);
 
-          writeToFile(option.global?.outFile, globalClassNameKeys, true);
+          if (!!css.globalStyle && option.global?.generate) {
+            const globalClassNameKeys = extractClassNameKeys(
+              postcssJs.objectify(postcss.parse(css.globalStyle))
+            );
+
+            writeToFile(option.global?.outFile, globalClassNameKeys, true);
+          }
+        } catch (e) {
+          console.error("e :>> ", e);
         }
       }
     });
