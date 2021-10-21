@@ -8,7 +8,7 @@
  This is a plugin that automatically creates a type file when using the css module type-safely.
 
 ## Demo
-![Demo](https://user-images.githubusercontent.com/39351982/138234224-ed37c060-96ad-41c7-b638-884f973b8984.gif)
+<img src="https://user-images.githubusercontent.com/39351982/138234224-ed37c060-96ad-41c7-b638-884f973b8984.gif" width="600" />
 
 ## Install
 ```bash
