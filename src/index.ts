@@ -3,7 +3,7 @@ import { isCSSRequest } from "./util";
 import { main } from "./main";
 import { PluginOption } from "./type";
 
-export default function Plugin(option: PluginOption): Plugin {
+export default function Plugin(option: PluginOption = {}): Plugin {
   let cacheConfig: UserConfig;
   let cacheEnv: ConfigEnv;
   return {

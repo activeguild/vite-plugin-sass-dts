@@ -3,7 +3,7 @@ export type AdditionalData =
   | ((source: string, filename: string) => string | Promise<string>);
 
 export type PluginOption = {
-  allGenerate: boolean;
+  allGenerate?: boolean;
   global?: { generate: boolean; outFile: string };
 };
 
