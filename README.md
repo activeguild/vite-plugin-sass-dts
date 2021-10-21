@@ -129,3 +129,8 @@ export const row = 'row'
 export type GlobalClassNames = 'row'
 ```
 
+## Principles of conduct
+Please see [the principles of conduct](https://github.com/activeguild/vite-plugin-sass-dts/blob/master/.github/CONTRIBUTING.md) when building a site.
+
+## License
+This library is licensed under the [MIT license](https://github.com/activeguild/vite-plugin-sass-dts/blob/master/LICENSE).
