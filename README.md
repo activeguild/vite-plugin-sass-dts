@@ -1,4 +1,4 @@
-<h1 align="center">Welcome 😀</h1>
+<h1 align="center">vite-plugin-sass-dts ⚡ Welcome 😀</h1>
 
 <p align="left">
   <a href="https://github.com/actions/setup-node"><img alt="GitHub Actions status" src="https://github.com/activeguild/classnames-generics/workflows/automatic%20release/badge.svg" style="max-width:100%;"></a>
@@ -7,7 +7,10 @@
 # vite-plugin-sass-dts
  This is a plugin that automatically creates a type file when using the css module type-safely.
 
-## install
+## Demo
+<img src="https://user-images.githubusercontent.com/39351982/138234224-ed37c060-96ad-41c7-b638-884f973b8984.gif" width="600" />
+
+## Install
 ```bash
 npm i -D vite-plugin-sass-dts
 ```
@@ -129,3 +132,8 @@ export const row = 'row'
 export type GlobalClassNames = 'row'
 ```
 
+## Principles of conduct
+Please see [the principles of conduct](https://github.com/activeguild/vite-plugin-sass-dts/blob/master/.github/CONTRIBUTING.md) when building a site.
+
+## License
+This library is licensed under the [MIT license](https://github.com/activeguild/vite-plugin-sass-dts/blob/master/LICENSE).
