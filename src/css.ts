@@ -28,7 +28,7 @@ const getData = (
   filename: string,
   additionalData?: AdditionalData
 ): string | Promise<string> => {
-  if (!additionalData) return data;
+  if (!additionalData) return `\n${SPLIT_STR}${data}`;
   if (typeof additionalData === "function") {
     return additionalData(`\n${SPLIT_STR}${data}`, filename);
   }
