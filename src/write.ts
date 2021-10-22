@@ -8,10 +8,6 @@ export const writeToFile = (
   globalStyle?: boolean,
   globalOutFile?: string
 ) => {
-  if (classNameKeys.size === 0) {
-    return;
-  }
-
   let exportConsts = "";
   let exportType = "";
   const exportTypePrefix = globalStyle
@@ -32,14 +28,22 @@ export const writeToFile = (
     );
     const exportTypeFileName = formatExportTypeFileName(globalOutFile);
     outputFileString = `export * from '${relativePath}${exportTypeFileName}'\n`;
-    outputFileString = `${outputFileString}import { GlobalClassNames } from '${relativePath}${exportTypeFileName}'\n\n`;
-    outputFileString = `${outputFileString}${exportConsts}\n${exportType} | GlobalClassNames`;
+
+    if (classNameKeys.size === 0) {
+      outputFileString = `${outputFileString}export type { GlobalClassNames } from '${relativePath}${exportTypeFileName}'\n\n`;
+    } else {
+      outputFileString = `${outputFileString}import { GlobalClassNames } from '${relativePath}${exportTypeFileName}'\n\n`;
+      outputFileString = `${outputFileString}${exportConsts}\n${exportType} | GlobalClassNames`;
+    }
   } else {
     outputFileString = `${exportConsts}\n${exportType}`;
   }
 
   fs.writeFile(formatWriteFileName(fileName), `${outputFileString}`, (err) => {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      throw err;
+    }
   });
 };
 

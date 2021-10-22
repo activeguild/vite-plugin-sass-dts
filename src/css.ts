@@ -20,7 +20,7 @@ export const parseCss = async (
   });
 
   const splitted = result.css.toString().split(SPLIT_STR);
-  return { localStyle: splitted[1], globalStyle: splitted[0] };
+  return { localStyle: splitted[1] || '', globalStyle: splitted[0] };
 };
 
 const getData = (
