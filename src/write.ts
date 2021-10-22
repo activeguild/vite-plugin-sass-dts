@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { camelCase, getRelativePath } from "./util";
+import { replaceSeparation, getRelativePath } from "./util";
 
 export const writeToFile = (
   fileName: string,
@@ -44,10 +44,7 @@ export const writeToFile = (
 };
 
 export const formatExportConst = (key: string) =>
-  `export const ${camelCase(key)} = '${key}'`;
-
-// export const formatExportConstForGlobal = (key: string) =>
-//   `  const ${camelCase(key)} = '${key}'`;
+  `export const ${replaceSeparation(key)} = '${key}'`;
 
 export const formatWriteFileName = (file: string) =>
   `${file}${file.endsWith("d.ts") ? "" : ".d.ts"}`;
