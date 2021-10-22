@@ -3,10 +3,12 @@ export const extractClassNameKeys = (
 ): Map<string, boolean> => {
   return Object.entries(obj).reduce<Map<string, boolean>>(
     (curr, [key, value]) => {
+
+      const reg = new RegExp(/^(@media)/g)
+      if( reg.test(key)) return curr;
       const splittedKeys = key.split(/(?=[\s\.:\[\]><\+,\(\)])/g);
       for (const splittedKey of splittedKeys) {
         if (splittedKey.startsWith(".")) {
-          console.log('splittedKey :>> ', splittedKey);
           curr.set(splittedKey.replace(".", "").trim(), true);
         }
       }
