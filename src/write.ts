@@ -8,7 +8,7 @@ export const writeToFile = (
   globalOutFile?: string
 ) => {
   let exportTypes = "";
-  let exportStyle = "export = classes;";
+  let exportStyle = "export = classNames;";
   for (const classNameKey of classNameKeys.keys()) {
     exportTypes = `${exportTypes}\n${formatExportType(classNameKey)}`;
   }
@@ -20,10 +20,10 @@ export const writeToFile = (
       path.dirname(globalOutFile)
     );
     const exportTypeFileName = formatExportTypeFileName(globalOutFile);
-    outputFileString = `import globalClasses from '${relativePath}${exportTypeFileName}'\n`;
-    outputFileString = `${outputFileString}declare const classes: typeof globalClasses & {${exportTypes}\n};\n${exportStyle}`;
+    outputFileString = `import globalClassNames from '${relativePath}${exportTypeFileName}'\n`;
+    outputFileString = `${outputFileString}declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`;
   } else {
-    outputFileString = `declare const classes: {${exportTypes}\n};\n${exportStyle}`;
+    outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}`;
   }
 
   fs.writeFile(formatWriteFileName(fileName), `${outputFileString}`, (err) => {
