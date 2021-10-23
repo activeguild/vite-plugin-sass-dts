@@ -52,16 +52,16 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/stylesheets/variables" as var;`,
+        additionalData: `@use "@/styles" as common;`,
         importer(...args) {
-          if (args[0] !== "@/stylesheets/variables") {
+          if (args[0] !== "@/styles") {
             return;
           }
 
           return {
             file: `${path.resolve(
               __dirname,
-              "./src/assets/stylesheets/variables"
+              "./src/assets/styles"
             )}`,
           };
         },
@@ -89,7 +89,7 @@ Then save the following file ...
 
 
 ```scss
-[src/assets/stylesheets/variables/_index.scss]
+[src/assets/styles/_index.scss]
 
 .row {
   display: flex;
@@ -100,7 +100,7 @@ Then save the following file ...
 [src/App.module.scss]
 
 .header-1 {
-  background-color: var.$primary;
+  background-color: common.$primary;
   .active {
     background-color: black;
   }
