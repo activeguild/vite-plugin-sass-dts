@@ -1,7 +1,7 @@
 import path from "path";
 
 export const replaceSeparation = (str: string) => {
-  return str.replace(/[-_](.)/g, (_, group1) => {
+  return str.replace(/[-](.)/g, (_, group1) => {
     return group1;
   });
 };
