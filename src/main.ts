@@ -24,14 +24,14 @@ export const main = (
           const classNameKeys = extractClassNameKeys(
             postcssJs.objectify(postcss.parse(css.localStyle))
           );
-          writeToFile(fileName, classNameKeys, false, option.global?.outFile);
+          writeToFile(fileName, classNameKeys, option.global?.outFile);
 
           if (!!css.globalStyle && option.global?.generate) {
             const globalClassNameKeys = extractClassNameKeys(
               postcssJs.objectify(postcss.parse(css.globalStyle))
             );
 
-            writeToFile(option.global?.outFile, globalClassNameKeys, true);
+            writeToFile(option.global?.outFile, globalClassNameKeys);
           }
         } catch (e) {
           console.error("e :>> ", e);

@@ -15,7 +15,7 @@ API_URL="https://api.github.com/repos/${REPO}/git/refs"
 
 curl -s -X POST $API_URL \
   -H "Authorization: token $GITHUB_TOKEN" \
-  -d @- << eos
+  -d @- << EOS
 {
   "ref": "refs/tags/v${TAG}",
   "sha": "${COMMIT}"

@@ -99,7 +99,7 @@ Then save the following file ...
 ```scss
 [src/App.module.scss]
 
-.header {
+.header-1 {
   background-color: var.$primary;
   .active {
     background-color: black;
@@ -112,13 +112,13 @@ Saving the scss file creates a d.ts file in the same hierarchy.
 ```ts
 [src/App.scss.d.ts]
 
-export * from './style.d'
-import { GlobalClassNames } from './style.d'
+import globalStyle from './style.d'
+declare const styles: typeof globalStyle & {
+  readonly 'header-1': 'header-1';
+  readonly 'active': 'active';
 
-export const header = 'header'
-export const active = 'active'
-
-export type ClassNames = 'header' | 'active' | GlobalClassNames
+};
+export = styles;
 ```
 
 
@@ -127,9 +127,11 @@ The type definition is output to the output path of the common style specified i
 ```ts
 [src/style.d.ts]
 
-export const row = 'row'
+declare const styles: {
+  readonly 'row': 'row';
 
-export type GlobalClassNames = 'row'
+};
+export = styles;
 ```
 
 ## Principles of conduct
