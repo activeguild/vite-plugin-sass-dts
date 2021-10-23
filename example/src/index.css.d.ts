@@ -1,5 +1,4 @@
-import globalStyle from './style.d'
-declare const styles: typeof globalStyle & {
-
+import globalClasses from './style.d'
+declare const classes: typeof globalClasses & {
 };
-export = styles;
+export = classes;
