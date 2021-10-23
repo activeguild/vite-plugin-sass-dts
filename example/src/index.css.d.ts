@@ -1,4 +1,4 @@
-import globalClasses from './style.d'
-declare const classes: typeof globalClasses & {
+import globalClassNames from './style.d'
+declare const classNames: typeof globalClassNames & {
 };
-export = classes;
+export = classNames;
