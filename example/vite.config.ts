@@ -7,23 +7,23 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/stylesheets/variables" as var;`,
+        additionalData: `@use "@/styles" as common;`,
         // [Sample]
         // additionalData: (content: string, path: string): string => {
         //   return [
-        //     '@use "@/stylesheets/variables" as var;',
+        //     '@use "@/styles" as common;',
         //     content,
         //   ].join('\n');
         // },
         importer(...args) {
-          if (args[0] !== "@/stylesheets/variables") {
+          if (args[0] !== "@/styles") {
             return;
           }
 
           return {
             file: `${path.resolve(
               __dirname,
-              "./src/assets/stylesheets/variables"
+              "./src/assets/styles"
             )}`,
           };
         },
