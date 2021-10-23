@@ -1,3 +1,5 @@
-export const row = 'row'
+declare const styles: {
+  readonly 'row': 'row';
 
-export type GlobalClassNames = 'row'
+};
+export = styles;

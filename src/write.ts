@@ -1,23 +1,16 @@
 import fs from "fs";
 import path from "path";
-import { replaceSeparation, getRelativePath } from "./util";
+import { getRelativePath } from "./util";
 
 export const writeToFile = (
   fileName: string,
   classNameKeys: Map<string, boolean>,
-  globalStyle?: boolean,
   globalOutFile?: string
 ) => {
-  let exportConsts = "";
-  let exportType = "";
-  const exportTypePrefix = globalStyle
-    ? "export type GlobalClassNames = "
-    : "export type ClassNames = ";
+  let exportTypes = "";
+  let exportStyle = "export = styles;";
   for (const classNameKey of classNameKeys.keys()) {
-    exportConsts = `${exportConsts}${formatExportConst(classNameKey)}\n`;
-    exportType = exportType
-      ? `${exportType} | '${classNameKey}'`
-      : `${exportTypePrefix}'${classNameKey}'`;
+    exportTypes = `${exportTypes}${formatExportType(classNameKey)}\n`;
   }
 
   let outputFileString = "";
@@ -27,16 +20,10 @@ export const writeToFile = (
       path.dirname(globalOutFile)
     );
     const exportTypeFileName = formatExportTypeFileName(globalOutFile);
-    outputFileString = `export * from '${relativePath}${exportTypeFileName}'\n`;
-
-    if (classNameKeys.size === 0) {
-      outputFileString = `${outputFileString}export type { GlobalClassNames } from '${relativePath}${exportTypeFileName}'\n\n`;
-    } else {
-      outputFileString = `${outputFileString}import { GlobalClassNames } from '${relativePath}${exportTypeFileName}'\n\n`;
-      outputFileString = `${outputFileString}${exportConsts}\n${exportType} | GlobalClassNames`;
-    }
+    outputFileString = `import globalStyle from '${relativePath}${exportTypeFileName}'\n`;
+    outputFileString = `${outputFileString}declare const styles: typeof globalStyle & {\n${exportTypes}\n};\n${exportStyle}`;
   } else {
-    outputFileString = `${exportConsts}\n${exportType}`;
+    outputFileString = `declare const styles: {\n${exportTypes}\n};\n${exportStyle}`;
   }
 
   fs.writeFile(formatWriteFileName(fileName), `${outputFileString}`, (err) => {
@@ -47,8 +34,8 @@ export const writeToFile = (
   });
 };
 
-export const formatExportConst = (key: string) =>
-  `export const ${replaceSeparation(key)} = '${key}'`;
+export const formatExportType = (key: string) =>
+  `  readonly '${key}': '${key}';`;
 
 export const formatWriteFileName = (file: string) =>
   `${file}${file.endsWith("d.ts") ? "" : ".d.ts"}`;

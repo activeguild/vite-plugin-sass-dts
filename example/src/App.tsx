@@ -1,8 +1,8 @@
 import { VFC } from "react";
-import styles, { ClassNames } from "./App.module.scss";
+import styles from "./App.module.scss";
 import { classNamesFunc } from "classnames-generics";
 
-const classNames = classNamesFunc<ClassNames>();
+const classNames = classNamesFunc<keyof typeof styles>();
 type Props = {
   active: boolean;
 };
@@ -11,7 +11,7 @@ export const App: VFC<Props> = (props) => {
   return (
     <header
       className={classNames(
-        styles.header,
+        styles["header-1"],
         { [styles.active]: props.active },
         styles.row
       )}
