@@ -1,4 +1,4 @@
-declare const styles: {
+declare const classes: {
   readonly 'row': 'row';
 };
-export = styles;
+export = classes;

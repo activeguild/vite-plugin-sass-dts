@@ -1,6 +1,6 @@
-import globalStyle from './style.d'
-declare const styles: typeof globalStyle & {
+import globalClasses from './style.d'
+declare const classes: typeof globalClasses & {
   readonly 'header-1': 'header-1';
   readonly 'active': 'active';
 };
-export = styles;
+export = classes;

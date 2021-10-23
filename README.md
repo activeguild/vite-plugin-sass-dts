@@ -112,12 +112,12 @@ Saving the scss file creates a d.ts file in the same hierarchy.
 ```ts
 [src/App.scss.d.ts]
 
-import globalStyle from './style.d'
-declare const styles: typeof globalStyle & {
+import globalClasses from './style.d'
+declare const classes: typeof globalClasses & {
   readonly 'header-1': 'header-1';
   readonly 'active': 'active';
 };
-export = styles;
+export = classes;
 ```
 
 
@@ -126,10 +126,10 @@ The type definition is output to the output path of the common style specified i
 ```ts
 [src/style.d.ts]
 
-declare const styles: {
+declare const classes: {
   readonly 'row': 'row';
 };
-export = styles;
+export = classes;
 ```
 
 ## Principles of conduct
