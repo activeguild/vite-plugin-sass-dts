@@ -8,7 +8,8 @@
     "build": "tsc --project tsconfig.json",
     "local:publish": "npm run build && npm link",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+    "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -40,11 +41,16 @@
     "@typescript-eslint/parser": "^5.1.0",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.4",
     "postcss": "^8.3.9",
     "postcss-js": "^3.0.3",
     "prettier": "^2.4.1",
     "sass": "^1.42.1",
     "typescript": "^4.4.3",
     "vite": "^2.6.7"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
