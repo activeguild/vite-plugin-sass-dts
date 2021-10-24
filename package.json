@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "local:publish": "npm run build && npm link"
+    "local:publish": "npm run build && npm link",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
   },
   "repository": {
     "type": "git",
@@ -34,8 +36,13 @@
   },
   "devDependencies": {
     "@types/sass": "^1.16.1",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
     "postcss": "^8.3.9",
     "postcss-js": "^3.0.3",
+    "prettier": "^2.4.1",
     "sass": "^1.42.1",
     "typescript": "^4.4.3",
     "vite": "^2.6.7"
