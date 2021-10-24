@@ -9,6 +9,7 @@ export default function Plugin(option: PluginOption = {}): Plugin {
   return {
     config(config, env) {
       cacheConfig = config
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       cacheEnv = env
     },
     name: 'vite-plugin-sass-dts',
