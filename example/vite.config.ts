@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import sassDts from "vite-plugin-sass-dts";
-import path from "path";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import sassDts from 'vite-plugin-sass-dts'
+import path from 'path'
 
 export default defineConfig({
   css: {
@@ -16,16 +16,13 @@ export default defineConfig({
         //   ].join('\n');
         // },
         importer(...args) {
-          if (args[0] !== "@/styles") {
-            return;
+          if (args[0] !== '@/styles') {
+            return
           }
 
           return {
-            file: `${path.resolve(
-              __dirname,
-              "./src/assets/styles"
-            )}`,
-          };
+            file: `${path.resolve(__dirname, './src/assets/styles')}`,
+          }
         },
       },
     },
@@ -36,8 +33,8 @@ export default defineConfig({
       allGenerate: true,
       global: {
         generate: true,
-        outFile: path.resolve(__dirname, "./src/style.d.ts"),
+        outFile: path.resolve(__dirname, './src/style.d.ts'),
       },
     }),
   ],
-});
+})

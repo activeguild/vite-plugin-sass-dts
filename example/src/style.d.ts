@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly 'row': 'row';
-};
-export = classNames;
+  readonly row: 'row'
+}
+export = classNames

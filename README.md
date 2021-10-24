@@ -5,48 +5,52 @@
 </p>
 
 # vite-plugin-sass-dts
- This is a plugin that automatically creates a type file when using the css module type-safely.
+
+This is a plugin that automatically creates a type file when using the css module type-safely.
 
 ## Demo
+
 <img src="https://user-images.githubusercontent.com/39351982/138234224-ed37c060-96ad-41c7-b638-884f973b8984.gif" width="600" />
 
 ## Install
+
 ```bash
 npm i -D vite-plugin-sass-dts
 ```
 
 ## Options
 
-| Parameter | Type             | Description                                                                     |
-| --------- | ---------------- | ------------------------------------------------------------------------------- |
-| allGenerate | boolean | Create all d.ts files of the css, sass, scss files included in the project at build time.<br />We recommend that you turn off the flag once you have created the d.ts file, as it will take a long time to build.                            |
-| global.generate | boolean | Outputs the common style set in <b>additionalData</b> of <b>preprocessorOptions</b> as a global type definition file. |
-| global.outFile | string | Specify the file that outputs the global common style with an absolute path.Relative paths will be supported. |
+| Parameter       | Type    | Description                                                                                                                                                                                                       |
+| --------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| allGenerate     | boolean | Create all d.ts files of the css, sass, scss files included in the project at build time.<br />We recommend that you turn off the flag once you have created the d.ts file, as it will take a long time to build. |
+| global.generate | boolean | Outputs the common style set in <b>additionalData</b> of <b>preprocessorOptions</b> as a global type definition file.                                                                                             |
+| global.outFile  | string  | Specify the file that outputs the global common style with an absolute path.Relative paths will be supported.                                                                                                     |
+
 ## Add it to vite.config.ts
 
 ```ts
-import { defineConfig } from "vite";
-import sassDts from "vite-plugin-sass-dts";
+import { defineConfig } from 'vite'
+import sassDts from 'vite-plugin-sass-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [sassDts()],
-});
-
+})
 ```
 
 ## Usage
+
 You can create a dts file by saving the scss file during development.
 You can check the usage [example](https://github.com/activeguild/vite-plugin-sass-dts/tree/master/example) when the following options are set.
 Prepare the vite.config.ts file with the following options and start it in development mode.
 
 ```ts
-[vite.config.ts]
+;[vite.config.ts]
 
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import sassDts from "vite-plugin-sass-dts";
-import path from "path";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import sassDts from 'vite-plugin-sass-dts'
+import path from 'path'
 
 export default defineConfig({
   css: {
@@ -54,16 +58,13 @@ export default defineConfig({
       scss: {
         additionalData: `@use "@/styles" as common;`,
         importer(...args) {
-          if (args[0] !== "@/styles") {
-            return;
+          if (args[0] !== '@/styles') {
+            return
           }
 
           return {
-            file: `${path.resolve(
-              __dirname,
-              "./src/assets/styles"
-            )}`,
-          };
+            file: `${path.resolve(__dirname, './src/assets/styles')}`,
+          }
         },
       },
     },
@@ -74,11 +75,11 @@ export default defineConfig({
       allGenerate: true,
       global: {
         generate: true,
-        outFile: path.resolve(__dirname, "./src/style.d.ts"),
+        outFile: path.resolve(__dirname, './src/style.d.ts'),
       },
     }),
   ],
-});
+})
 ```
 
 ```bash
@@ -87,19 +88,14 @@ npm run dev
 
 Then save the following file ...
 
-
 ```scss
-[src/assets/styles/_index.scss]
-
-.row {
+[src/assets/styles/_index.scss] .row {
   display: flex;
 }
 ```
 
 ```scss
-[src/App.module.scss]
-
-.header-1 {
+[src/App.module.scss] .header-1 {
   background-color: common.$primary;
   .active {
     background-color: black;
@@ -110,30 +106,31 @@ Then save the following file ...
 Saving the scss file creates a d.ts file in the same hierarchy.
 
 ```ts
-[src/App.scss.d.ts]
+;[src / App.scss.d.ts]
 
 import globalClassNames from './style.d'
 declare const classNames: typeof globalClassNames & {
-  readonly 'header-1': 'header-1';
-  readonly 'active': 'active';
-};
-export = classNames;
+  readonly 'header-1': 'header-1'
+  readonly active: 'active'
+}
+export = classNames
 ```
-
 
 The type definition is output to the output path of the common style specified in the option.
 
 ```ts
-[src/style.d.ts]
+;[src / style.d.ts]
 
 declare const classNames: {
-  readonly 'row': 'row';
-};
-export = classNames;
+  readonly row: 'row'
+}
+export = classNames
 ```
 
 ## Principles of conduct
+
 Please see [the principles of conduct](https://github.com/activeguild/vite-plugin-sass-dts/blob/master/.github/CONTRIBUTING.md) when building a site.
 
 ## License
+
 This library is licensed under the [MIT license](https://github.com/activeguild/vite-plugin-sass-dts/blob/master/LICENSE).
