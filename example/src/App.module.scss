@@ -1,6 +1,6 @@
 .header-1 {
   background-color: common.$primary;
-  .active {
+  &.active {
     background-color: black;
   }
 }
