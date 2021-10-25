@@ -106,7 +106,7 @@ Then save the following file ...
 Saving the scss file creates a d.ts file in the same hierarchy.
 
 ```ts
-;[src / App.scss.d.ts]
+[src / App.scss.d.ts]
 
 import globalClassNames, { ClassNames as GlobalClassNames } from './style.d'
 declare const classNames: typeof globalClassNames & {
@@ -120,7 +120,7 @@ export type ClassNames = 'header-1' | 'active' | GlobalClassNames
 The type definition is output to the output path of the common style specified in the option.
 
 ```ts
-;[src / style.d.ts]
+[src / style.d.ts]
 
 declare const classNames: {
   readonly row: 'row'
