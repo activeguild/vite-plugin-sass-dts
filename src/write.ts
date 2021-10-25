@@ -12,9 +12,10 @@ export const writeToFile = (
   const exportStyle = 'export default classNames;'
   for (const classNameKey of classNameKeys.keys()) {
     exportTypes = `${exportTypes}\n${formatExportType(classNameKey)}`
-    exportClassNames = exportClassNames
-      ? `${exportClassNames} | '${classNameKey}'`
-      : `${exportClassNames}  '${classNameKey}'`
+    exportClassNames =
+      exportClassNames !== 'export type ClassNames = '
+        ? `${exportClassNames} | '${classNameKey}'`
+        : `${exportClassNames} '${classNameKey}'`
   }
 
   let outputFileString = ''
