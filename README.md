@@ -10,7 +10,7 @@ This is a plugin that automatically creates a type file when using the css modul
 
 ## Demo
 
-<img src="https://user-images.githubusercontent.com/39351982/138234224-ed37c060-96ad-41c7-b638-884f973b8984.gif" width="600" />
+<img src="https://user-images.githubusercontent.com/39351982/138745772-8b218863-fe28-4573-a86a-fc10a7ab1ac7.gif" width="600" />
 
 ## Install
 
@@ -106,7 +106,7 @@ Then save the following file ...
 Saving the scss file creates a d.ts file in the same hierarchy.
 
 ```ts
-[src / App.scss.d.ts]
+;[src / App.scss.d.ts]
 
 import globalClassNames, { ClassNames as GlobalClassNames } from './style.d'
 declare const classNames: typeof globalClassNames & {
@@ -120,7 +120,7 @@ export type ClassNames = 'header-1' | 'active' | GlobalClassNames
 The type definition is output to the output path of the common style specified in the option.
 
 ```ts
-[src / style.d.ts]
+;[src / style.d.ts]
 
 declare const classNames: {
   readonly row: 'row'
