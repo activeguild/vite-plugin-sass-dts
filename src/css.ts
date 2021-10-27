@@ -1,14 +1,13 @@
-import { getPreprocessorOptions } from './options'
 import { renderSync } from 'sass'
-import { AdditionalData, CSS } from './type'
-import { UserConfig } from 'vite'
+import { getPreprocessorOptions } from './options'
+import { AdditionalData, CSS, FinalConfig } from './type'
 
 const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
 
 export const parseCss = async (
   file: Buffer,
   fileName: string,
-  config: UserConfig
+  config: FinalConfig
 ): Promise<CSS> => {
   const { additionalData, includePaths, importer } =
     getPreprocessorOptions(config)

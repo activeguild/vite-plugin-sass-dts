@@ -1,6 +1,6 @@
-import { UserConfig } from 'vite'
+import { FinalConfig } from './type'
 
-export const getPreprocessorOptions = (config: UserConfig) => {
+export const getPreprocessorOptions = (config: FinalConfig) => {
   let additionalData, includePaths, importer
 
   if (

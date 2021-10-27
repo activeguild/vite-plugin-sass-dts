@@ -1,18 +1,20 @@
-import { ConfigEnv, Plugin, UserConfig } from 'vite'
+import prettier from 'prettier'
+import { Plugin } from 'vite'
 import { main } from './main'
-import { PluginOption } from './type'
+import { FinalConfig, PluginOption } from './type'
 import { isCSSRequest } from './util'
 
 export default function Plugin(option: PluginOption = {}): Plugin {
-  let cacheConfig: UserConfig
-  let cacheEnv: ConfigEnv
+  let cacheConfig: FinalConfig
   return {
-    config(config, env) {
-      cacheConfig = config
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      cacheEnv = env
-    },
     name: 'vite-plugin-sass-dts',
+    async configResolved(config) {
+      const prettierOptions = (await prettier.resolveConfig(config.root)) || {}
+      cacheConfig = {
+        ...config,
+        prettierOptions: { ...prettierOptions, filepath: '*.d.ts' },
+      }
+    },
     handleHotUpdate(context) {
       if (!isCSSRequest(context.file)) return
       main(context.file, cacheConfig, option)

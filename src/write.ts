@@ -1,8 +1,10 @@
 import fs from 'fs'
 import path from 'path'
+import prettier, { Options } from 'prettier'
 import { getRelativePath } from './util'
 
-export const writeToFile = (
+export const writeToFile = async (
+  prettierOptions: Options,
   fileName: string,
   classNameKeys: Map<string, boolean>,
   globalOutFile?: string
@@ -32,12 +34,21 @@ export const writeToFile = (
     outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}\n${exportClassNames}`
   }
 
-  fs.writeFile(formatWriteFileName(fileName), `${outputFileString}`, (err) => {
-    if (err) {
-      console.log(err)
-      throw err
+  const prettierdPutputFileString = prettier.format(
+    outputFileString,
+    prettierOptions
+  )
+
+  fs.writeFile(
+    formatWriteFileName(fileName),
+    `${prettierdPutputFileString}`,
+    (err) => {
+      if (err) {
+        console.log(err)
+        throw err
+      }
     }
-  })
+  )
 }
 
 export const formatExportType = (key: string) =>
