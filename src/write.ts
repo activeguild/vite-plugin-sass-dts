@@ -34,14 +34,14 @@ export const writeToFile = async (
     outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}\n${exportClassNames}`
   }
 
-  const prettierdPutputFileString = prettier.format(
+  const prettierdOutputFileString = prettier.format(
     outputFileString,
     prettierOptions
   )
 
   fs.writeFile(
     formatWriteFileName(fileName),
-    `${prettierdPutputFileString}`,
+    `${prettierdOutputFileString}`,
     (err) => {
       if (err) {
         console.log(err)
