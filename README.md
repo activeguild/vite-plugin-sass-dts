@@ -8,6 +8,11 @@
 
 This is a plugin that automatically creates a type file when using the CSS module type-safely.
 
+## Future plans
+
+- [ ] Vite alias resolution.
+- [ ] Efficient global style typing.
+
 ## Demo
 
 <img src="https://user-images.githubusercontent.com/39351982/138745772-8b218863-fe28-4573-a86a-fc10a7ab1ac7.gif" width="600" />
