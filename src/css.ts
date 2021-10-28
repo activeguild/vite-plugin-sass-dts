@@ -9,13 +9,13 @@ export const parseCss = async (
   fileName: string,
   config: FinalConfig
 ): Promise<CSS> => {
-  const { additionalData, includePaths, importer } =
-    getPreprocessorOptions(config)
-
+  const options = getPreprocessorOptions(config)
   const result = renderSync({
-    data: await getData(file.toString(), fileName, additionalData),
-    includePaths,
-    importer,
+    ...options,
+    data: await getData(file.toString(), fileName, options.additionalData),
+    file: fileName,
+    includePaths: options.includePaths,
+    importer: options.importer,
   })
 
   const splitted = result.css.toString().split(SPLIT_STR)
