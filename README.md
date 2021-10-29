@@ -10,7 +10,7 @@ This is a plugin that automatically creates a type file when using the CSS modul
 
 ## Future plans
 
-- [ ] Vite alias resolution.
+- [x] Vite alias resolution.(Updated: Oct-30-2021)
 - [ ] Efficient global style typing.
 
 ## Demo

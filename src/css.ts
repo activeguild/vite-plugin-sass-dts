@@ -1,4 +1,4 @@
-import { renderSync } from 'sass'
+import { Importer, ImporterReturnType, renderSync } from 'sass'
 import { getPreprocessorOptions } from './options'
 import { AdditionalData, CSS, FinalConfig } from './type'
 
@@ -10,12 +10,42 @@ export const parseCss = async (
   config: FinalConfig
 ): Promise<CSS> => {
   const options = getPreprocessorOptions(config)
+  const resolveFn = config.createResolver({
+    extensions: ['.scss', '.sass', '.css'],
+    mainFields: ['sass', 'style'],
+    tryIndex: true,
+    tryPrefix: '_',
+    preferRelative: true,
+  })
+
+  const internalImporter: Importer = (url, importer, done) => {
+    resolveFn(url, importer).then((resolved) => {
+      if (resolved) {
+        new Promise<ImporterReturnType>(function (resolve) {
+          resolve({ file: resolved })
+        })
+          .then(done)
+          .catch(done)
+      } else {
+        done && done(null)
+      }
+    })
+  }
+
+  const finalImporter = [internalImporter]
+
+  if (options.importer) {
+    Array.isArray(options.importer)
+      ? finalImporter.push(...options.importer)
+      : finalImporter.push(options.importer)
+  }
+
   const result = renderSync({
     ...options,
     data: await getData(file.toString(), fileName, options.additionalData),
     file: fileName,
     includePaths: options.includePaths,
-    importer: options.importer,
+    importer: finalImporter,
   })
 
   const splitted = result.css.toString().split(SPLIT_STR)
