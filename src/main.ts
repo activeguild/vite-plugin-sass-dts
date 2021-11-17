@@ -23,7 +23,8 @@ export const main = (
             : await parseCss(file, fileName, config)
           const toParseCase = getParseCase(config)
           const classNameKeys = extractClassNameKeys(
-            postcssJs.objectify(postcss.parse(css.localStyle))
+            postcssJs.objectify(postcss.parse(css.localStyle)),
+            toParseCase
           )
           writeToFile(
             config.prettierOptions,
@@ -34,7 +35,8 @@ export const main = (
 
           if (!!css.globalStyle && option.global?.generate) {
             const globalClassNameKeys = extractClassNameKeys(
-              postcssJs.objectify(postcss.parse(css.globalStyle))
+              postcssJs.objectify(postcss.parse(css.globalStyle)),
+              toParseCase
             )
 
             writeToFile(
