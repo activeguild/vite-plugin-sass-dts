@@ -13,11 +13,11 @@ export const getRelativePath = (
 
 export const toDashCase = (target: string) =>
   target
-    .replace(/[-_ /~ . ][A-z0-9]/g, function (v) {
+    .replace(/[-_ /~ . ][A-z0-9]/g, (v) => {
       return '-' + v.slice(1)
     })
     .toLowerCase()
 export const toCamelCase = (target: string) =>
-  target.toLowerCase().replace(/[-_ ./~ ][a-z]/g, function (v) {
+  target.toLowerCase().replace(/[-_ ./~ ][a-z]/g, (v) => {
     return v.slice(1).toUpperCase()
   })
