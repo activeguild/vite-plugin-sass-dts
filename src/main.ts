@@ -3,6 +3,7 @@ import postcss from 'postcss'
 import postcssJs from 'postcss-js'
 import { parseCss } from './css'
 import { extractClassNameKeys } from './extract'
+import { getParseCase } from './options'
 import { CSS, FinalConfig, PluginOption } from './type'
 import { writeToFile } from './write'
 
@@ -20,6 +21,7 @@ export const main = (
           const css: CSS = fileName.endsWith('.css')
             ? { localStyle: file.toString() }
             : await parseCss(file, fileName, config)
+          const toParseCase = getParseCase(config)
           const classNameKeys = extractClassNameKeys(
             postcssJs.objectify(postcss.parse(css.localStyle))
           )
