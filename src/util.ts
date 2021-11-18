@@ -17,7 +17,8 @@ export const toDashCase = (target: string) =>
       return '-' + v.slice(1)
     })
     .toLowerCase()
+
 export const toCamelCase = (target: string) =>
-  target.toLowerCase().replace(/[-_ ./~ ][a-z]/g, (v) => {
-    return v.slice(1).toUpperCase()
-  })
+  target
+    .replace(/^[A-Z]/, (m) => m.toLowerCase())
+    .replace(/[-_ ./~ ]+([A-z0-9])/g, (m, $1) => $1.toUpperCase())
