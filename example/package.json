@@ -17,12 +17,13 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@types/react": "^17.0.29",
-    "@types/react-dom": "^17.0.9",
-    "@types/sass": "^1.16.1",
-    "@vitejs/plugin-react": "^1.0.4",
-    "sass": "^1.43.2",
-    "typescript": "^4.4.4",
-    "vite": "^2.6.7"
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@types/sass": "^1.43.0",
+    "@vitejs/plugin-react": "^1.1.1",
+    "npm-check-updates": "^12.0.3",
+    "sass": "^1.43.4",
+    "typescript": "^4.5.3",
+    "vite": "^2.7.1"
   }
 }
