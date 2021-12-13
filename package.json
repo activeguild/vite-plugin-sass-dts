@@ -46,6 +46,7 @@
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
+    "npm-check-updates": "^12.0.3",
     "postcss": "^8.3.11",
     "postcss-js": "^3.0.3",
     "sass": "^1.43.4",
