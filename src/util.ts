@@ -1,4 +1,5 @@
 import path from 'path'
+import type { SassException } from 'sass'
 
 export const cssLangs = `\\.(css|sass|scss)($|\\?)`
 export const cssLangReg = new RegExp(cssLangs)
@@ -22,3 +23,5 @@ export const toCamelCase = (target: string) =>
   target
     .replace(/^[A-Z]/, (m) => m.toLowerCase())
     .replace(/[-_ ./~ ]+([A-z0-9])/g, (m, $1) => $1.toUpperCase())
+
+export const isSassException = (e: any): e is SassException => 'file' in e
