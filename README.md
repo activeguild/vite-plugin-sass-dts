@@ -6,12 +6,7 @@
 
 # vite-plugin-sass-dts
 
-This is a plugin that automatically creates a type file when using the CSS module type-safely.
-
-## Future plans
-
-- [x] Vite alias resolution.(Updated: Oct-30-2021)
-- [ ] Efficient global style typing.
+A plugin that automatically creates a type file when using the CSS module type-safely.
 
 ## Demo
 
@@ -50,7 +45,7 @@ You can check the usage [example](https://github.com/activeguild/vite-plugin-sas
 Prepare the vite.config.ts file with the following options and start it in development mode.
 
 ```ts
-[vite.config.ts]
+;[vite.config.ts]
 
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -111,7 +106,7 @@ Then save the following file ...
 Saving the scss file creates a d.ts file in the same hierarchy.
 
 ```ts
-[src / App.scss.d.ts]
+;[src / App.scss.d.ts]
 
 import globalClassNames, { ClassNames as GlobalClassNames } from './style.d'
 declare const classNames: typeof globalClassNames & {
@@ -125,7 +120,7 @@ export type ClassNames = 'header-1' | 'active' | GlobalClassNames
 The type definition is output to the output path of the common style specified in the option.
 
 ```ts
-[src / style.d.ts]
+;[src / style.d.ts]
 
 declare const classNames: {
   readonly row: 'row'

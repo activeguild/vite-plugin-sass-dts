@@ -5,6 +5,7 @@ import { parseCss } from './css'
 import { extractClassNameKeys } from './extract'
 import { getParseCase } from './options'
 import { CSS, FinalConfig, PluginOption } from './type'
+import { isSassException } from './util'
 import { writeToFile } from './write'
 
 export const main = (
@@ -46,7 +47,9 @@ export const main = (
             )
           }
         } catch (e) {
-          console.error('e :>> ', e)
+          if (isSassException(e) && e.file !== fileName) {
+            console.error('e :>> ', e)
+          }
         }
       }
     })
