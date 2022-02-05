@@ -49,7 +49,7 @@
     "npm-check-updates": "^12.2.1",
     "postcss": "^8.4.5",
     "postcss-js": "^4.0.0",
-    "sass": "^1.43.4",
+    "sass-embedded": "^1.49.7",
     "typescript": "^4.5.5",
     "vite": "^2.7.13"
   },

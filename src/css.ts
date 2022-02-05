@@ -1,5 +1,4 @@
-// import { Importer, ImporterReturnType, renderSync } from 'sass'
-import type Sass from 'sass'
+import type { LegacyImporter, LegacyImporterResult } from 'sass-embedded'
 import { getPreprocessorOptions } from './options'
 import { AdditionalData, CSS, FinalConfig } from './type'
 
@@ -24,10 +23,10 @@ export const parseCss = async (
     preferRelative: true,
   })
 
-  const internalImporter: Sass.Importer = (url, importer, done) => {
+  const internalImporter: LegacyImporter = (url, importer, done) => {
     resolveFn(url, importer).then((resolved) => {
       if (resolved) {
-        new Promise<Sass.ImporterReturnType>(function (resolve) {
+        new Promise<LegacyImporterResult>(function (resolve) {
           resolve({ file: resolved })
         })
           .then(done)
@@ -76,14 +75,15 @@ const loadSassPreprocessor = (config: FinalConfig): any => {
     if (loadedSassPreprocessor) {
       return loadedSassPreprocessor
     }
-    const fallbackPaths = require.resolve.paths?.('sass') || []
-    const resolved = require.resolve('sass', {
+    const fallbackPaths = require.resolve.paths?.('sass-embedded') || []
+    const resolved = require.resolve('sass-embedded', {
       paths: [config.root, ...fallbackPaths],
     })
+    console.log(resolved)
     return (loadedSassPreprocessor = require(resolved))
   } catch (e) {
     throw new Error(
-      `Preprocessor dependency 'sass' not found. Did you install it?`
+      `Preprocessor dependency 'sass-embedded' not found. Did you install it?`
     )
   }
 }
