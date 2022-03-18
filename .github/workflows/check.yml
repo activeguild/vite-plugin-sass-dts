@@ -1,0 +1,19 @@
+name: calculate Js bundle size
+
+on:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize']
+jobs:
+  calculate-size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
+      - uses: sarthak-saxena/JSBundleSize@master
+        with:
+          bootstrap: 'npm ci'
+          build_command: 'npm run build'
+          dist_path: 'dist'
+          token: ${{ secrets.GITHUB_TOKEN }}
