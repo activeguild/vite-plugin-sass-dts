@@ -22,7 +22,7 @@ export default function Plugin(option: PluginOption = {}): Plugin {
       return
     },
     transform(code, id) {
-      if (!enabledMode.includes(cacheConfig.env.mode)) {
+      if (!enabledMode.includes(cacheConfig.env.MODE)) {
         return { code }
       }
 
