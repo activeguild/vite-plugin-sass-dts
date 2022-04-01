@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "local:link": "npm link vite-plugin-sass-dts",
+    "local:link": "npm link ../",
     "local:start": "npm run local:link && npm run dev"
   },
   "author": "",

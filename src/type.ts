@@ -8,7 +8,7 @@ export type AdditionalData =
   | ((source: string, filename: string) => string | Promise<string>)
 
 export type PluginOption = {
-  allGenerate?: boolean
+  enabledMode?: ('development' | 'production')[]
   global?: { generate: boolean; outFile: string }
 }
 

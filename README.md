@@ -20,11 +20,11 @@ npm i -D vite-plugin-sass-dts
 
 ## Options
 
-| Parameter       | Type    | Description                                                                                                                                                                                                       |
-| --------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| allGenerate     | boolean | Create all d.ts files of the css, sass, scss files included in the project at build time.<br />We recommend that you turn off the flag once you have created the d.ts file, as it will take a long time to build. |
-| global.generate | boolean | Outputs the common style set in <b>additionalData</b> of <b>preprocessorOptions</b> as a global type definition file.                                                                                             |
-| global.outFile  | string  | Specify the file that outputs the global common style with an absolute path.Relative paths will be supported.                                                                                                     |
+| Parameter       | Type     | Description                                                                                                                                                                                                                                                                                                                                 |
+| --------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| enabledMode     | string[] | Create d.ts files for css modules of file extension css, sass, scss included in the project at build time.<br /><br>Valid enumerations 'development' and 'production'. By default it is enabled only for development.<br>We recommend that you turn off the flag once you have created the d.ts file, as it will take a long time to build. |
+| global.generate | boolean  | Outputs the common style set in <b>additionalData</b> of <b>preprocessorOptions</b> as a global type definition file.                                                                                                                                                                                                                       |
+| global.outFile  | string   | Specify the file that outputs the global common style with an absolute path.Relative paths will be supported.                                                                                                                                                                                                                               |
 
 ## Add it to vite.config.ts
 
@@ -72,7 +72,7 @@ export default defineConfig({
   plugins: [
     react(),
     sassDts({
-      allGenerate: true,
+      enabledMode: ['development', 'production'],
       global: {
         generate: true,
         outFile: path.resolve(__dirname, './src/style.d.ts'),

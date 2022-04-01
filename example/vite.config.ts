@@ -30,7 +30,7 @@ export default defineConfig({
   plugins: [
     react(),
     sassDts({
-      allGenerate: true,
+      enabledMode: ['development', 'production'],
       global: {
         generate: true,
         outFile: path.resolve(__dirname, './src/style.d.ts'),

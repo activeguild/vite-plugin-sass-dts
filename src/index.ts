@@ -2,10 +2,11 @@ import prettier from 'prettier'
 import { Plugin } from 'vite'
 import { main } from './main'
 import { FinalConfig, PluginOption } from './type'
-import { isCSSRequest } from './util'
+import { isCSSModuleRequest } from './util'
 
 export default function Plugin(option: PluginOption = {}): Plugin {
   let cacheConfig: FinalConfig
+  const enabledMode = option.enabledMode || ['development']
   return {
     name: 'vite-plugin-sass-dts',
     async configResolved(config) {
@@ -16,17 +17,17 @@ export default function Plugin(option: PluginOption = {}): Plugin {
       }
     },
     handleHotUpdate(context) {
-      if (!isCSSRequest(context.file)) return
+      if (!isCSSModuleRequest(context.file)) return
       main(context.file, cacheConfig, option)
       return
     },
     transform(code, id) {
-      if (!option.allGenerate) {
+      if (!enabledMode.includes(cacheConfig.env.MODE)) {
         return { code }
       }
 
       const fileName = id.replace('?used', '')
-      if (!isCSSRequest(fileName)) return { code }
+      if (!isCSSModuleRequest(fileName)) return { code }
 
       main(fileName, cacheConfig, option)
 
