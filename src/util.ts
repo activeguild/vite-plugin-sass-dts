@@ -3,9 +3,13 @@ import type { SassException } from 'sass'
 
 export const cssLangs = `\\.(css|sass|scss)($|\\?)`
 export const cssLangReg = new RegExp(cssLangs)
+export const cssModuleReg = new RegExp(`\\.module${cssLangs}`)
 
 export const isCSSRequest = (request: string): boolean =>
   cssLangReg.test(request)
+
+export const isCSSModuleRequest = (request: string): boolean =>
+  cssModuleReg.test(request)
 
 export const getRelativePath = (
   from: string | undefined,
