@@ -88,40 +88,47 @@ npm run dev
 
 Then save the following file ...
 
+[src/assets/styles/_index.scss]
 ```scss
-[src/assets/styles/_index.scss] .row {
+.row {
   display: flex;
 }
 ```
 
+[src/App.module.scss]
 ```scss
-[src/App.module.scss] .header-1 {
+.header-1 {
   background-color: common.$primary;
   &.active {
     background-color: black;
+  }
+}
+
+.input {
+  @media (min-width: 768px) {
+    max-width: 370px;
   }
 }
 ```
 
 Saving the scss file creates a d.ts file in the same hierarchy.
 
+[src/App.scss.d.ts]
 ```ts
-;[src / App.scss.d.ts]
-
 import globalClassNames, { ClassNames as GlobalClassNames } from './style.d'
 declare const classNames: typeof globalClassNames & {
   readonly 'header-1': 'header-1'
   readonly active: 'active'
+  readonly input: 'input'
 }
 export default classNames
-export type ClassNames = 'header-1' | 'active' | GlobalClassNames
+export type ClassNames = 'header-1' | 'active' | 'input' | GlobalClassNames
 ```
 
 The type definition is output to the output path of the common style specified in the option.
 
+[src/style.d.ts]
 ```ts
-;[src / style.d.ts]
-
 declare const classNames: {
   readonly row: 'row'
 }
