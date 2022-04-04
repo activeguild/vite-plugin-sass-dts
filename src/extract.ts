@@ -1,32 +1,38 @@
+import { collectionToObj } from './util'
+
+import type { CSSJSObj } from './type'
+
+const importRe = new RegExp(/^(@import)/g)
+const keySeparatorRe = new RegExp(/(?=[\s.:[\]><+,()])/g)
+
 export const extractClassNameKeys = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  obj: Record<string, any>,
+  obj: CSSJSObj,
   toParseCase: ((target: string) => string) | undefined
 ): Map<string, boolean> => {
   return Object.entries(obj).reduce<Map<string, boolean>>(
     (curr, [key, value]) => {
-      const reg = new RegExp(/^(@media|@import)/g)
-      if (reg.test(key)) return curr
-      const splittedKeys = key.split(/(?=[\s.:[\]><+,()])/g)
-      for (const splittedKey of splittedKeys) {
-        if (splittedKey.startsWith('.')) {
+      if (importRe.test(key)) return curr
+      const splitKeys = key.split(keySeparatorRe)
+      for (const splitKey of splitKeys) {
+        if (splitKey.startsWith('.')) {
           if (toParseCase) {
-            curr.set(toParseCase(splittedKey.replace('.', '').trim()), true)
+            curr.set(toParseCase(splitKey.replace('.', '').trim()), true)
           } else {
-            curr.set(splittedKey.replace('.', '').trim(), true)
+            curr.set(splitKey.replace('.', '').trim(), true)
           }
         }
       }
 
       if (typeof value === 'object' && Object.keys(value).length > 0) {
-        const map = extractClassNameKeys(value, toParseCase)
+        const valueToExtract = Array.isArray(value)
+          ? collectionToObj(value)
+          : value
+        const map = extractClassNameKeys(valueToExtract, toParseCase)
         for (const key of map.keys()) {
-          if (key.startsWith('.')) {
-            if (toParseCase) {
-              curr.set(toParseCase(key), true)
-            } else {
-              curr.set(key, true)
-            }
+          if (toParseCase) {
+            curr.set(toParseCase(key), true)
+          } else {
+            curr.set(key, true)
           }
         }
       }

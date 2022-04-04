@@ -13,3 +13,8 @@ export type PluginOption = {
 }
 
 export type CSS = { localStyle: string; globalStyle?: string }
+
+export type CSSJSObj = Record<
+  string,
+  string | Record<string, string> | Record<string, Record<string, string>>[]
+>
