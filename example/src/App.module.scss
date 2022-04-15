@@ -4,3 +4,9 @@
     background-color: black;
   }
 }
+
+.input {
+  @media (min-width: 768px) {
+    max-width: 370px;
+  }
+}
