@@ -16,7 +16,7 @@ export const App: VFC<Props> = (props) => {
         styles.row
       )}
     >
-      vite-plugin-sass-dts-example
+      <p style={{ color: styles.green }}>vite-plugin-sass-dts-example</p>
     </header>
   )
 }

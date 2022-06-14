@@ -1,3 +1,9 @@
+$green: #00c851;
+
+:export {
+  green: $green;
+}
+
 .header-1 {
   background-color: common.$primary;
   &.active {

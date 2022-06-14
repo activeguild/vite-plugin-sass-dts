@@ -1,20 +1,21 @@
 import { collectionToObj } from './util'
 
-import type { CSSJSObj } from './type'
+import type { CSSJSObj, GetParseCaseFunction } from './type'
 
 const importRe = new RegExp(/^(@import)/g)
 const keySeparatorRe = new RegExp(/(?=[\s.:[\]><+,()])/g)
 
 export const extractClassNameKeys = (
   obj: CSSJSObj,
-  toParseCase: ((target: string) => string) | undefined
+  toParseCase: GetParseCaseFunction,
+  parentKey?: string
 ): Map<string, boolean> => {
   return Object.entries(obj).reduce<Map<string, boolean>>(
     (curr, [key, value]) => {
       if (importRe.test(key)) return curr
       const splitKeys = key.split(keySeparatorRe)
       for (const splitKey of splitKeys) {
-        if (splitKey.startsWith('.')) {
+        if (parentKey === ':export' || splitKey.startsWith('.')) {
           if (toParseCase) {
             curr.set(toParseCase(splitKey.replace('.', '').trim()), true)
           } else {
@@ -27,7 +28,8 @@ export const extractClassNameKeys = (
         const valueToExtract = Array.isArray(value)
           ? collectionToObj(value)
           : value
-        const map = extractClassNameKeys(valueToExtract, toParseCase)
+        const map = extractClassNameKeys(valueToExtract, toParseCase, key)
+
         for (const key of map.keys()) {
           if (toParseCase) {
             curr.set(toParseCase(key), true)
