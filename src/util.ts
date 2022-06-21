@@ -28,7 +28,8 @@ export const toCamelCase = (target: string) =>
     .replace(/^[A-Z]/, (m) => m.toLowerCase())
     .replace(/[-_ ./~ ]+([A-z0-9])/g, (m, $1) => $1.toUpperCase())
 
-export const isSassException = (e: any): e is SassException => 'file' in e
+export const isSassException = (e: unknown): e is SassException =>
+  typeof e === 'object' && !!e && 'file' in e
 
 export const collectionToObj = <V>(collection: Record<string, V>[]) => {
   return collection.reduce((acc, item): Record<string, V> => {
