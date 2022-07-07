@@ -40,18 +40,18 @@
   "devDependencies": {
     "@types/prettier": "^2.6.3",
     "@types/sass": "^1.43.1",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
-    "eslint": "^8.18.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.2",
-    "npm-check-updates": "^14.0.1",
+    "lint-staged": "^13.0.3",
+    "npm-check-updates": "^15.2.0",
     "postcss": "^8.4.14",
     "postcss-js": "^4.0.0",
     "sass": "^1.43.4",
     "typescript": "^4.7.4",
-    "vite": "^2.9.12"
+    "vite": "^2.9.13"
   },
   "peerDependencies": {
     "sass": "*"
