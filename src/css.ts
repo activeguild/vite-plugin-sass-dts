@@ -1,7 +1,7 @@
 // import { Importer, ImporterReturnType, renderSync } from 'sass'
 import type Sass from 'sass'
 import { getPreprocessorOptions } from './options'
-import { AdditionalData, CSS, FinalConfig } from './type'
+import type { AdditionalData, CSS, FinalConfig } from './type'
 
 const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
 

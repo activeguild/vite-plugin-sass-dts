@@ -1,4 +1,4 @@
-import { FinalConfig, GetParseCaseFunction } from './type'
+import type { FinalConfig, GetParseCaseFunction } from './type'
 import { toCamelCase, toDashCase } from './util'
 
 export const getParseCase = (config: FinalConfig): GetParseCaseFunction => {

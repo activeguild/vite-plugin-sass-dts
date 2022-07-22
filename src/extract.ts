@@ -1,5 +1,4 @@
 import { collectionToObj } from './util'
-
 import type { CSSJSObj, GetParseCaseFunction } from './type'
 
 const importRe = new RegExp(/^(@import)/g)
