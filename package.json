@@ -18,7 +18,7 @@
     "local:publish": "npm run build && npm link",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
-    "xprepare": "husky install",
+    "prepare": "husky install",
     "prettier": "prettier src --write"
   },
   "repository": {
