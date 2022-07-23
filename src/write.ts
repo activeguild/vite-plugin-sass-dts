@@ -1,6 +1,6 @@
-import fs from 'fs'
-import path from 'path'
-import prettier, { Options } from 'prettier'
+import { writeFile } from 'node:fs'
+import { dirname, basename } from 'node:path'
+import { format, type Options } from 'prettier'
 import { getRelativePath } from './util'
 
 export const writeToFile = async (
@@ -23,8 +23,8 @@ export const writeToFile = async (
   let outputFileString = ''
   if (globalOutFile) {
     const relativePath = getRelativePath(
-      path.dirname(fileName),
-      path.dirname(globalOutFile)
+      dirname(fileName),
+      dirname(globalOutFile)
     )
     const exportTypeFileName = formatExportTypeFileName(globalOutFile)
     const globalClassNamesPrefix = classNameKeys.size === 0 ? '' : '| '
@@ -34,12 +34,9 @@ export const writeToFile = async (
     outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}\n${exportClassNames}`
   }
 
-  const prettierdOutputFileString = prettier.format(
-    outputFileString,
-    prettierOptions
-  )
+  const prettierdOutputFileString = format(outputFileString, prettierOptions)
 
-  fs.writeFile(
+  writeFile(
     formatWriteFileName(fileName),
     `${prettierdOutputFileString}`,
     (err) => {
@@ -58,4 +55,4 @@ export const formatWriteFileName = (file: string) =>
   `${file}${file.endsWith('d.ts') ? '' : '.d.ts'}`
 
 export const formatExportTypeFileName = (file: string) =>
-  path.basename(file.replace('.ts', ''))
+  basename(file.replace('.ts', ''))
