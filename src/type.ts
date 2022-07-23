@@ -1,5 +1,5 @@
-import { Options } from 'prettier'
-import { ResolvedConfig } from 'vite'
+import type { Options } from 'prettier'
+import type { ResolvedConfig } from 'vite'
 
 export type FinalConfig = ResolvedConfig & { prettierOptions: Options }
 

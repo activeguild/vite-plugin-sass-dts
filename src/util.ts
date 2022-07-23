@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import type { SassException } from 'sass'
 
 export const cssLangs = `\\.(css|sass|scss)($|\\?)`

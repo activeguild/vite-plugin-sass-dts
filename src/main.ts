@@ -1,10 +1,10 @@
 import fs from 'fs'
-import postcss from 'postcss'
-import postcssJs from 'postcss-js'
+import { parse } from 'postcss'
+import { objectify } from 'postcss-js'
 import { parseCss } from './css'
 import { extractClassNameKeys } from './extract'
 import { getParseCase } from './options'
-import { CSS, FinalConfig, PluginOption } from './type'
+import type { CSS, FinalConfig, PluginOption } from './type'
 import { isSassException } from './util'
 import { writeToFile } from './write'
 
@@ -24,7 +24,7 @@ export const main = (
             : await parseCss(file, fileName, config)
           const toParseCase = getParseCase(config)
           const classNameKeys = extractClassNameKeys(
-            postcssJs.objectify(postcss.parse(css.localStyle)),
+            objectify(parse(css.localStyle)),
             toParseCase
           )
           writeToFile(
@@ -36,7 +36,7 @@ export const main = (
 
           if (!!css.globalStyle && option.global?.generate) {
             const globalClassNameKeys = extractClassNameKeys(
-              postcssJs.objectify(postcss.parse(css.globalStyle)),
+              objectify(parse(css.globalStyle)),
               toParseCase
             )
 
