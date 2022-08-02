@@ -1,6 +1,9 @@
 import { writeFile } from 'node:fs'
 import { dirname, basename } from 'node:path'
-import { format, type Options } from 'prettier'
+import prettier from 'prettier'
+const { format } = prettier
+
+import { type Options } from 'prettier'
 import { getRelativePath } from './util'
 
 export const writeToFile = async (

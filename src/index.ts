@@ -1,4 +1,6 @@
-import { resolveConfig } from 'prettier'
+import prettier from 'prettier'
+const { resolveConfig } = prettier
+
 import type { Plugin as VitePlugin } from 'vite'
 import { main } from './main'
 import type { FinalConfig, PluginOption } from './type'
