@@ -9,7 +9,7 @@ const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let loadedSassPreprocessor: any
 
-const _require = createRequire(import.meta.url)
+const _require = import.meta.url ? createRequire(import.meta.url) : require
 
 export const parseCss = async (
   file: Buffer,
