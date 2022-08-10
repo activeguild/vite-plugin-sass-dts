@@ -1,13 +1,11 @@
 name: automatic release
 on:
   push:
-    branches:
-      - master
     tags:
-      - '!*'
+      - 'v*'
 jobs:
   release:
-    name: check version and tagging
+    name: package publish
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -17,16 +15,6 @@ jobs:
         with:
           node-version: 16.x
           registry-url: 'https://registry.npmjs.org'
-      - name: install can-npm-publish and dependencies
-        run: |
-          npm install -D can-npm-publish
-          npm ci
-      - name: check version and add tag
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          REPO: ${{github.repository}}
-          COMMIT: ${{github.sha}}
-        run: ./tools/release.sh
       - name: build
         run: npm run build
       - name: release
