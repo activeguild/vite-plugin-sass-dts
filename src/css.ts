@@ -45,8 +45,8 @@ export const parseCss = async (
 
   if (options.importer) {
     Array.isArray(options.importer)
-      ? finalImporter.push(...options.importer)
-      : finalImporter.push(options.importer)
+      ? finalImporter.unshift(...options.importer)
+      : finalImporter.unshift(options.importer)
   }
 
   const result = sass.renderSync({
