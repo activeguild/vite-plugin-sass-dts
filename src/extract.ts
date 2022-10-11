@@ -1,7 +1,7 @@
 import { collectionToObj } from './util'
 import type { CSSJSObj, GetParseCaseFunction } from './type'
 
-const importRe = new RegExp(/^(@import)/g)
+const importRe = new RegExp(/^(@import)/)
 const keySeparatorRe = new RegExp(/(?=[\s.:[\]><+,()])/g)
 
 export const extractClassNameKeys = (
