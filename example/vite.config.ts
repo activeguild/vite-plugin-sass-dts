@@ -16,8 +16,21 @@ export default defineConfig({
         //   ].join('\n');
         // },
         importer(...args) {
-          if (args[0] !== '@/styles') {
+          if (
+            args[0] !== '@/styles' &&
+            !(args[0] as string).startsWith('@blueprintjs')
+          ) {
             return
+          }
+
+          if ((args[0] as string).startsWith('@blueprintjs')) {
+            const file = (args[0] as string).replace(
+              '@blueprintjs',
+              `${path.resolve(__dirname, './node_modules/@blueprintjs')}`
+            )
+            return {
+              file,
+            }
           }
 
           return {
