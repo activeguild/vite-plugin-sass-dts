@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@blueprintjs/core": "^4.11.3",
     "classnames-generics": "^1.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
