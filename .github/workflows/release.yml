@@ -18,7 +18,7 @@ jobs:
       - name: install
         run: npm ci
       - name: build
-        run: npm run build
+        run: npm run build:turbo
       - name: release
         run: npm publish
         env:

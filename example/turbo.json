@@ -1,0 +1,7 @@
+{
+  "pipeline": {
+    "build": {
+      "outputs": ["dist/**"]
+    }
+  }
+}
