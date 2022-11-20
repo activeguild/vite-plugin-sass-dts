@@ -1,6 +1,7 @@
 {
   "pipeline": {
-    "build": {
+    "build:turbo": {
+      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     }
   }
