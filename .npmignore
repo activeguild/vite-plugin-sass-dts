@@ -6,9 +6,8 @@ tools
 example
 .husky
 .turbo
-.eslintgignore
+.eslintignore
 .eslintrc.cjs
 .prettierrc.cjs
 tsconfig.json
 turbo.json
-./index.d.ts
