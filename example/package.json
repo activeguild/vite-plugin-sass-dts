@@ -13,21 +13,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "classnames-generics": "^1.0.6",
+    "classnames-generics": "^1.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@blueprintjs/core": "^4.12.0",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
     "@types/sass": "^1.43.1",
-    "@vitejs/plugin-react": "^2.1.0",
-    "npm-check-updates": "^16.3.8",
-    "sass": "^1.55.0",
+    "@vitejs/plugin-react": "^2.2.0",
+    "npm-check-updates": "^16.4.1",
+    "sass": "^1.56.1",
     "turbo": "^1.6.3",
-    "typescript": "^4.8.4",
-    "vite": "^3.1.4",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.4",
     "vite-plugin-sass-dts": "^1.1.44"
   }
 }
