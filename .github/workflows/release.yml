@@ -7,6 +7,9 @@ jobs:
   release:
     name: package publish
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
