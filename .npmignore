@@ -4,3 +4,11 @@ src
 release.sh
 tools
 example
+.husky
+.turbo
+.eslintgignore
+.eslintrc.cjs
+.prettierrc.cjs
+tsconfig.json
+turbo.json
+./index.d.ts
