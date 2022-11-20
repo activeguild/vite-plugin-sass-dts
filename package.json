@@ -15,8 +15,7 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --clean",
-    "build:turbo": "turbo build",
-    "local:publish": "npm run build && npm link",
+    "local:publish": "turbo run build && npm link",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install",
