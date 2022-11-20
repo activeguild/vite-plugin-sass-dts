@@ -1,3 +1,5 @@
+@import '@blueprintjs/core/lib/scss/variables';
+
 $green: #00c851;
 
 :export {
@@ -7,7 +9,7 @@ $green: #00c851;
 .header-1 {
   background-color: common.$primary;
   &.active {
-    background-color: black;
+    background-color: $dark-gray1;
   }
 }
 

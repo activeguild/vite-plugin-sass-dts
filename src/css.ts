@@ -53,7 +53,7 @@ export const parseCss = async (
     ...options,
     data: await getData(file.toString(), fileName, options.additionalData),
     file: fileName,
-    includePaths: options.includePaths,
+    includePaths: ['node_modules'],
     importer: finalImporter,
   })
 
