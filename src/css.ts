@@ -27,10 +27,10 @@ export const parseCss = async (
     preferRelative: true,
   })
 
-  const internalImporter: Sass.Importer = (url, importer, done) => {
+  const internalImporter: Sass.LegacyImporter = (url, importer, done) => {
     resolveFn(url, importer).then((resolved) => {
       if (resolved) {
-        new Promise<Sass.ImporterReturnType>(function (resolve) {
+        new Promise<Sass.LegacyImporterResult>(function (resolve) {
           resolve({ file: resolved })
         })
           .then(done)
