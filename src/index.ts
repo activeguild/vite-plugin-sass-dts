@@ -24,16 +24,18 @@ export default function Plugin(option: PluginOption = {}): VitePlugin {
       return
     },
     transform(code, id) {
-      if (!enabledMode.includes(cacheConfig.env.MODE)) {
+      const fileName = id.replace('?used', '')
+
+      if (
+        !enabledMode.includes(cacheConfig.env.MODE) ||
+        !isCSSModuleRequest(fileName)
+      ) {
         return { code }
       }
 
-      const fileName = id.replace('?used', '')
-      if (!isCSSModuleRequest(fileName)) return { code }
-
-      main(fileName, cacheConfig, option)
-
-      return { code }
+      return new Promise((resolve) =>
+        resolve(main(fileName, cacheConfig, option))
+      )
     },
   }
 }
