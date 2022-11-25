@@ -1,5 +1,5 @@
 declare const classNames: {
   readonly row: 'row'
 }
-export default classNames
+export = classNames
 export type ClassNames = 'row'

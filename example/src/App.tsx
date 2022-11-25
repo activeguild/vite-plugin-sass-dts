@@ -1,5 +1,5 @@
 import { VFC } from 'react'
-import styles from './App.module.scss'
+import styles, { row } from './App.module.scss'
 import { classNamesFunc } from 'classnames-generics'
 
 const classNames = classNamesFunc<keyof typeof styles>()
@@ -13,7 +13,7 @@ export const App: VFC<Props> = (props) => {
       className={classNames(
         styles['header-1'],
         { [styles.active]: props.active },
-        styles.row
+        row
       )}
     >
       <p style={{ color: styles.green }}>vite-plugin-sass-dts-example</p>

@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-sass-dts",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A plugin that automatically creates a type file when using the css module type-safely.",
   "type": "module",
   "main": "dist/index.cjs",
@@ -14,8 +14,9 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
-    "local:publish": "turbo run build && npm link",
+    "tsup": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "build": "turbo run tsup",
+    "local:publish": "turbo run tsup && npm link",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install",
