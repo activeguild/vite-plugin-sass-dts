@@ -19,6 +19,6 @@ jobs:
       - uses: sarthak-saxena/JSBundleSize@master
         with:
           bootstrap: 'npm ci'
-          build_command: 'npx turbo build'
+          build_command: 'npm run build'
           dist_path: 'dist'
           token: ${{ secrets.GITHUB_TOKEN }}
