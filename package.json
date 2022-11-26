@@ -1,6 +1,9 @@
 {
   "name": "vite-plugin-sass-dts",
   "version": "1.2.4",
+  "engines": {
+    "node": "18.x"
+  },
   "description": "A plugin that automatically creates a type file when using the css module type-safely.",
   "type": "module",
   "main": "dist/index.cjs",

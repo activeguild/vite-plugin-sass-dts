@@ -1,13 +1,16 @@
 {
   "name": "vite-plugin-sass-dts-example",
   "version": "1.0.0",
+  "engines": {
+    "node": "18.x"
+  },
   "type": "module",
   "description": "This is an example of using vite-plugin-sass-dts.",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "local:link": "npm link ../",
+    "local:link": "npm link ../../",
     "local:start": "npm run local:link && npm run dev"
   },
   "author": "",
