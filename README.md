@@ -44,8 +44,8 @@ You can create a dts file by saving the scss file during development.
 You can check the usage [example](https://github.com/activeguild/vite-plugin-sass-dts/tree/master/example) when the following options are set.
 Prepare the vite.config.ts file with the following options and start it in development mode.
 
+[vite.config.ts]
 ```ts
-;[vite.config.ts]
 
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
