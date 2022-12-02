@@ -7,9 +7,10 @@ export type AdditionalData =
   | string
   | ((source: string, filename: string) => string | Promise<string>)
 
-export type PluginOption = {
+export type PluginOptions = {
   enabledMode?: ('development' | 'production')[]
   global?: { generate: boolean; outFile: string }
+  typeName?: { replacement: string | (() => string) }
 }
 
 export type CSS = { localStyle: string; globalStyle?: string }

@@ -4,14 +4,14 @@ import { objectify } from 'postcss-js'
 import { parseCss } from './css'
 import { extractClassNameKeys } from './extract'
 import { getParseCase } from './options'
-import type { CSS, FinalConfig, PluginOption } from './type'
+import type { CSS, FinalConfig, PluginOptions } from './type'
 import { isSassException } from './util'
 import { writeToFile } from './write'
 
 export const main = (
   fileName: string,
   config: FinalConfig,
-  option: PluginOption
+  option: PluginOptions
 ) => {
   try {
     fs.readFile(fileName, async (err, file) => {
@@ -27,12 +27,7 @@ export const main = (
             objectify(parse(css.localStyle)),
             toParseCase
           )
-          writeToFile(
-            config.prettierOptions,
-            fileName,
-            classNameKeys,
-            option.global?.outFile
-          )
+          writeToFile(config.prettierOptions, fileName, classNameKeys, option)
 
           if (!!css.globalStyle && option.global?.generate) {
             const globalClassNameKeys = extractClassNameKeys(
@@ -40,15 +35,13 @@ export const main = (
               toParseCase
             )
 
-            writeToFile(
-              config.prettierOptions,
-              option.global?.outFile,
-              globalClassNameKeys
-            )
+            writeToFile(config.prettierOptions, '', globalClassNameKeys, option)
           }
         } catch (e) {
-          if (isSassException(e) && e.file !== fileName) {
-            console.error('e :>> ', e)
+          if (isSassException(e)) {
+            if (e.name !== fileName) {
+              console.error('e :>> ', e)
+            }
           }
         }
       }

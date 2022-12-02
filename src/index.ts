@@ -3,10 +3,10 @@ const { resolveConfig } = prettier
 
 import type { Plugin as VitePlugin } from 'vite'
 import { main } from './main'
-import type { FinalConfig, PluginOption } from './type'
+import type { FinalConfig, PluginOptions } from './type'
 import { isCSSModuleRequest } from './util'
 
-export default function Plugin(option: PluginOption = {}): VitePlugin {
+export default function Plugin(option: PluginOptions = {}): VitePlugin {
   let cacheConfig: FinalConfig
   const enabledMode = option.enabledMode || ['development']
   return {

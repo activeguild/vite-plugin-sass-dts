@@ -4,13 +4,14 @@ import prettier from 'prettier'
 const { format } = prettier
 
 import { type Options } from 'prettier'
+import { PluginOptions } from 'type'
 import { getRelativePath } from './util'
 
 export const writeToFile = async (
   prettierOptions: Options,
   fileName: string,
   classNameKeys: Map<string, boolean>,
-  globalOutFile?: string
+  options: PluginOptions
 ) => {
   let exportTypes = '',
     exportClassNames = 'export type ClassNames = '
@@ -24,12 +25,12 @@ export const writeToFile = async (
   }
 
   let outputFileString = ''
-  if (globalOutFile) {
+  if (options.global?.outFile) {
     const relativePath = getRelativePath(
       dirname(fileName),
-      dirname(globalOutFile)
+      dirname(options.global.outFile)
     )
-    const exportTypeFileName = formatExportTypeFileName(globalOutFile)
+    const exportTypeFileName = formatExportTypeFileName(options.global.outFile)
     const globalClassNamesPrefix = classNameKeys.size === 0 ? '' : '| '
     outputFileString = `import globalClassNames, { ClassNames as GlobalClassNames } from '${relativePath}${exportTypeFileName}'\n`
     outputFileString = `${outputFileString}declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}\n${exportClassNames} ${globalClassNamesPrefix}GlobalClassNames`
