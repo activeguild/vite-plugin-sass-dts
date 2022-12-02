@@ -2,7 +2,7 @@
   "name": "vite-plugin-sass-dts",
   "version": "1.2.5",
   "engines": {
-    "node": "18.x"
+    "node": "18.12.1"
   },
   "description": "A plugin that automatically creates a type file when using the css module type-safely.",
   "type": "module",
@@ -52,12 +52,12 @@
   "devDependencies": {
     "@types/prettier": "^2.7.1",
     "@types/sass": "^1.43.1",
-    "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.44.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.2",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^13.0.4",
     "npm-check-updates": "^16.4.3",
     "postcss": "^8.4.19",
     "postcss-js": "^4.0.0",

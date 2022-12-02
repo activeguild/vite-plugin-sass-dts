@@ -45,8 +45,8 @@ You can check the usage [example](https://github.com/activeguild/vite-plugin-sas
 Prepare the vite.config.ts file with the following options and start it in development mode.
 
 [vite.config.ts]
-```ts
 
+```ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import sassDts from 'vite-plugin-sass-dts'
