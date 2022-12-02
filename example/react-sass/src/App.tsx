@@ -1,4 +1,4 @@
-import { VFC } from 'react'
+import { FC } from 'react'
 import styles, { row } from './App.module.scss'
 import { classNamesFunc } from 'classnames-generics'
 
@@ -7,7 +7,7 @@ type Props = {
   active: boolean
 }
 
-export const App: VFC<Props> = (props) => {
+export const App: FC<Props> = (props) => {
   return (
     <header
       className={classNames(
