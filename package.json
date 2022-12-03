@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-sass-dts",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "engines": {
     "node": "18.12.1"
   },
