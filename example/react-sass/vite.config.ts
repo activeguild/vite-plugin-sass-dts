@@ -36,7 +36,10 @@ export default defineConfig({
         outFile: path.resolve(__dirname, './src/style.d.ts'),
       },
       typeName: {
-        replacement: () => 'FooNames',
+        replacement: (fileName) => {
+          const spilittedFileName = fileName.split('.')
+          return `${spilittedFileName[0]}Names`
+        },
       },
     }),
   ],

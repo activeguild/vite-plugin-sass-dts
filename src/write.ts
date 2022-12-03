@@ -6,6 +6,7 @@ const { format } = prettier
 import { type Options } from 'prettier'
 import { PluginOptions } from 'type'
 import { getRelativePath } from './util'
+import path from 'path'
 const DEFAULT_TYPE_NAME = 'ClassNames'
 
 export const writeToFile = async (
@@ -14,7 +15,7 @@ export const writeToFile = async (
   classNameKeys: Map<string, boolean>,
   options?: PluginOptions
 ) => {
-  const typeName = getTypeName(options)
+  const typeName = getTypeName(path.basename(fileName), options)
   let exportTypes = '',
     exportClassNames = `export type ${typeName} = `
   const exportStyle = 'export = classNames;'
@@ -54,10 +55,10 @@ export const writeToFile = async (
   )
 }
 
-export const getTypeName = (options?: PluginOptions) => {
+export const getTypeName = (fileName: string, options?: PluginOptions) => {
   if (options && options.typeName && options.typeName.replacement) {
     if (typeof options.typeName.replacement === 'function') {
-      return options.typeName.replacement()
+      return options.typeName.replacement(fileName)
     } else {
       return options.typeName.replacement
     }

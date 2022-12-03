@@ -10,7 +10,7 @@ export type AdditionalData =
 export type PluginOptions = {
   enabledMode?: ('development' | 'production')[]
   global?: { generate: boolean; outFile: string }
-  typeName?: { replacement: string | (() => string) }
+  typeName?: { replacement: string | ((fileName: string) => string) }
 }
 
 export type CSS = { localStyle: string; globalStyle?: string }
