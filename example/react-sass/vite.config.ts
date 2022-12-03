@@ -35,6 +35,9 @@ export default defineConfig({
         generate: true,
         outFile: path.resolve(__dirname, './src/style.d.ts'),
       },
+      typeName: {
+        replacement: () => 'FooNames',
+      },
     }),
   ],
 })

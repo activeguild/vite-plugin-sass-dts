@@ -6,7 +6,7 @@ declare const classNames: typeof globalClassNames & {
   readonly input: 'input'
 }
 export = classNames
-export type ClassNames =
+export type FooNames =
   | 'green'
   | 'header-1'
   | 'active'

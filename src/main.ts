@@ -35,7 +35,11 @@ export const main = (
               toParseCase
             )
 
-            writeToFile(config.prettierOptions, '', globalClassNameKeys, option)
+            writeToFile(
+              config.prettierOptions,
+              option.global.outFile,
+              globalClassNameKeys
+            )
           }
         } catch (e) {
           if (isSassException(e)) {
