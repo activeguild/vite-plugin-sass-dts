@@ -30,7 +30,9 @@ export default function Plugin(option: PluginOptions = {}): VitePlugin {
         !enabledMode.includes(cacheConfig.env.MODE) ||
         !isCSSModuleRequest(fileName)
       ) {
-        return { code }
+        // returning undefined will signal vite that the file has not been transformed 
+        // avoiding warnings about source maps not being generated
+        return undefined;
       }
 
       return new Promise((resolve) =>
