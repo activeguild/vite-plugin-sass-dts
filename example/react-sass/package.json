@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "classnames-generics": "^1.0.7",
+    "classnames-generics": "^1.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -27,11 +27,11 @@
     "@types/sass": "^1.43.1",
     "@vitejs/plugin-react": "^3.0.0",
     "less": "^4.1.3",
-    "npm-check-updates": "^16.5.6",
-    "sass": "^1.56.2",
+    "npm-check-updates": "^16.6.2",
+    "sass": "^1.57.1",
     "turbo": "^1.6.3",
     "typescript": "^4.9.4",
-    "vite": "^4.0.1",
-    "vite-plugin-sass-dts": "^1.2.7"
+    "vite": "^4.0.3",
+    "vite-plugin-sass-dts": "^1.2.9"
   }
 }
