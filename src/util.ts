@@ -14,7 +14,12 @@ export const isCSSModuleRequest = (request: string): boolean =>
 export const getRelativePath = (
   from: string | undefined,
   to: string | undefined
-) => path.relative(path.dirname(from || ''), path.dirname(to || '')) || './'
+) => {
+  const relativePath =
+    path.relative(path.dirname(from || ''), path.dirname(to || '')) || './'
+
+  return relativePath.endsWith('..') ? `${relativePath}/` : relativePath
+}
 
 export const toDashCase = (target: string) =>
   target

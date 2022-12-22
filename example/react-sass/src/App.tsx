@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import styles, { row } from './App.module.scss'
 import { classNamesFunc } from 'classnames-generics'
+import { User } from './User/User'
 
 const classNames = classNamesFunc<keyof typeof styles>()
 type Props = {
@@ -17,6 +18,7 @@ export const App: FC<Props> = (props) => {
       )}
     >
       <p style={{ color: styles.green }}>vite-plugin-sass-dts-example</p>
+      <User />
     </header>
   )
 }
