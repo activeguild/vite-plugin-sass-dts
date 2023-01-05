@@ -16,15 +16,10 @@ export const writeToFile = async (
   options?: PluginOptions
 ) => {
   const typeName = getTypeName(path.basename(fileName), options)
-  let exportTypes = '',
-    exportClassNames = `export type ${typeName} = `
+  let exportTypes = ''
   const exportStyle = 'export = classNames;'
   for (const classNameKey of classNameKeys.keys()) {
     exportTypes = `${exportTypes}\n${formatExportType(classNameKey)}`
-    exportClassNames =
-      exportClassNames !== `export type ${typeName} = `
-        ? `${exportClassNames} | '${classNameKey}'`
-        : `${exportClassNames} '${classNameKey}'`
   }
 
   let outputFileString = ''
@@ -34,11 +29,10 @@ export const writeToFile = async (
       dirname(options.global.outFile)
     )
     const exportTypeFileName = formatExportTypeFileName(options.global.outFile)
-    const globalClassNamesPrefix = classNameKeys.size === 0 ? '' : '| '
-    outputFileString = `import globalClassNames, { ClassNames as GlobalClassNames } from '${relativePath}${exportTypeFileName}'\n`
-    outputFileString = `${outputFileString}declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}\n${exportClassNames} ${globalClassNamesPrefix}GlobalClassNames`
+    outputFileString = `import globalClassNames from '${relativePath}${exportTypeFileName}'\n`
+    outputFileString = `${outputFileString}declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
   } else {
-    outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}\n${exportClassNames}`
+    outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}`
   }
 
   const prettierdOutputFileString = format(outputFileString, prettierOptions)
