@@ -52,8 +52,8 @@
   "devDependencies": {
     "@types/prettier": "^2.7.2",
     "@types/sass": "^1.43.1",
-    "@typescript-eslint/eslint-plugin": "^5.48.0",
-    "@typescript-eslint/parser": "^5.48.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
     "husky": "^8.0.3",
@@ -63,7 +63,7 @@
     "postcss-js": "^4.0.0",
     "sass": "^1.57.1",
     "tsup": "^6.5.0",
-    "turbo": "^1.6.3",
+    "turbo": "^1.7.0",
     "typescript": "^4.9.4",
     "vite": "^4.0.4"
   },
