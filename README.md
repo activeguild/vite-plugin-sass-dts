@@ -126,7 +126,6 @@ declare const classNames: typeof globalClassNames & {
   readonly input: 'input'
 }
 export = classNames
-export type ClassNames = 'header-1' | 'active' | 'input' | GlobalClassNames
 ```
 
 The type definition is output to the output path of the common style specified in the option.
@@ -138,7 +137,6 @@ declare const classNames: {
   readonly row: 'row'
 }
 export = classNames
-export type ClassNames = 'row'
 ```
 
 ## Principles of conduct
