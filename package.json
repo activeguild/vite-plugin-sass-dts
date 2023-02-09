@@ -47,7 +47,7 @@
   },
   "homepage": "https://github.com/activeguild/vite-plugin-sass-dts#readme",
   "dependencies": {
-    "postcss-js": "^4.0.0"
+    "postcss-js": "^4.0.1"
   },
   "devDependencies": {
     "@types/prettier": "^2.7.2",
