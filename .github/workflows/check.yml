@@ -16,9 +16,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+      - uses: pnpm/action-setup@v2.2.4
       - uses: sarthak-saxena/JSBundleSize@master
         with:
-          bootstrap: 'npm ci'
-          build_command: 'npm run build'
+          bootstrap: 'pnpm ci'
+          build_command: 'pnpm run build'
           dist_path: 'dist'
           token: ${{ secrets.GITHUB_TOKEN }}
