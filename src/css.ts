@@ -55,6 +55,7 @@ export const parseCss = async (
     file: fileName,
     includePaths: ['node_modules'],
     importer: finalImporter,
+    alias: config.resolve.alias,
   })
 
   const splitted = result.css.toString().split(SPLIT_STR)

@@ -19,6 +19,7 @@
   "scripts": {
     "tsup": "tsup src/index.ts --format esm,cjs --dts --clean",
     "build": "turbo run tsup",
+    "watch": "turbo run tsup -- --watch",
     "local:publish": "turbo run tsup && npm link",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --fix --ext .js,.jsx,.ts,.tsx",

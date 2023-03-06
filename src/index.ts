@@ -25,7 +25,6 @@ export default function Plugin(option: PluginOptions = {}): VitePlugin {
     },
     transform(code, id) {
       const fileName = id.replace('?used', '')
-
       if (
         !enabledMode.includes(cacheConfig.env.MODE) ||
         !isCSSModuleRequest(fileName)
