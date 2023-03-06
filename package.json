@@ -61,6 +61,7 @@
     "npm-check-updates": "^16.7.10",
     "postcss": "^8.4.21",
     "postcss-js": "^4.0.1",
+    "prettier": "^2.8.4",
     "sass": "^1.58.3",
     "tsup": "^6.6.3",
     "turbo": "^1.8.3",
