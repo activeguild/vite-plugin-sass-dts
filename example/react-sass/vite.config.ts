@@ -4,6 +4,9 @@ import sassDts from 'vite-plugin-sass-dts'
 import path from 'path'
 
 export default defineConfig({
+  resolve: {
+    alias: { '@/styles': path.resolve(__dirname, 'src/assets/styles') },
+  },
   css: {
     preprocessorOptions: {
       scss: {
