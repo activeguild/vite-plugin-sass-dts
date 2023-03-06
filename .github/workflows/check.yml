@@ -21,7 +21,7 @@ jobs:
           version: 7.29.0      
       - uses: sarthak-saxena/JSBundleSize@master
         with:
-          bootstrap: 'pnpm ci'
+          bootstrap: 'pnpm i'
           build_command: 'pnpm run build'
           dist_path: 'dist'
           token: ${{ secrets.GITHUB_TOKEN }}

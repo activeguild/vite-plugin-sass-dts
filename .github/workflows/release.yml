@@ -22,7 +22,7 @@ jobs:
         with:
           version: 7.29.0
       - name: install
-        run: pnpm ci
+        run: pnpm i
       - name: build
         run: pnpm run build
       - name: release
