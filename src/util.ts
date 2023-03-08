@@ -4,6 +4,7 @@ import type { Exception } from 'sass'
 export const cssLangs = `\\.(css|sass|scss)($|\\?)`
 export const cssLangReg = new RegExp(cssLangs)
 export const cssModuleReg = new RegExp(`\\.module${cssLangs}`)
+export const importCssRE = /@import ('[^']+\.css'|"[^"]+\.css"|[^'")]+\.css)/
 
 export const isCSSRequest = (request: string): boolean =>
   cssLangReg.test(request)

@@ -22,3 +22,8 @@ export type CSSJSObj = Record<
 >
 
 export type GetParseCaseFunction = ((target: string) => string) | undefined
+
+export type CssUrlReplacer = (
+  url: string,
+  importer?: string
+) => string | Promise<string>

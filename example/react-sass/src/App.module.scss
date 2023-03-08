@@ -1,4 +1,4 @@
-@use '@/alias/_variables';
+@import '@/alias/_variables';
 
 $green: #00c851;
 
@@ -12,6 +12,7 @@ $green: #00c851;
     background-color: red;
   }
 }
+
 
 .input {
   @media (min-width: 768px) {

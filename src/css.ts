@@ -1,8 +1,12 @@
 // import { Importer, ImporterReturnType, renderSync } from 'sass'
 import type Sass from 'sass'
 import { getPreprocessorOptions } from './options'
-import type { AdditionalData, CSS, FinalConfig } from './type'
+import type { AdditionalData, CSS, CssUrlReplacer, FinalConfig } from './type'
 import { createRequire } from 'node:module'
+import { Alias, normalizePath } from 'vite'
+import path from 'path'
+import fs from 'fs'
+import { importCssRE } from './util'
 
 const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
 
@@ -30,9 +34,7 @@ export const parseCss = async (
   const internalImporter: Sass.LegacyImporter = (url, importer, done) => {
     resolveFn(url, importer).then((resolved) => {
       if (resolved) {
-        new Promise<Sass.LegacyImporterResult>(function (resolve) {
-          resolve({ file: resolved })
-        })
+        rebaseUrls(resolved, fileName, config.resolve.alias, '$')
           .then(done)
           .catch(done)
       } else {
@@ -92,3 +94,101 @@ const loadSassPreprocessor = (config: FinalConfig): any => {
     )
   }
 }
+
+const rebaseUrls = async (
+  file: string,
+  rootFile: string,
+  alias: Alias[],
+  variablePrefix: string
+): Promise<Sass.LegacyImporterResult> => {
+  file = path.resolve(file) // ensure os-specific flashes
+  // in the same dir, no need to rebase
+  const fileDir = path.dirname(file)
+  const rootDir = path.dirname(rootFile)
+
+  if (fileDir === rootDir) {
+    return { file }
+  }
+
+  const content = fs.readFileSync(file, 'utf-8')
+  console.log('content :>> ', content)
+  const hasImportCss = importCssRE.test(content)
+  if (!hasImportCss) {
+    return { file }
+  }
+
+  let rebased
+  const rebaseFn = (url: string) => {
+    if (url.startsWith('/')) return url
+    if (url.startsWith(variablePrefix)) return url
+    for (const { find } of alias) {
+      const matches =
+        typeof find === 'string' ? url.startsWith(find) : find.test(url)
+      if (matches) {
+        return url
+      }
+    }
+    const absolute = path.resolve(fileDir, url)
+    const relative = path.relative(rootDir, absolute)
+    return normalizePath(relative)
+  }
+
+  if (hasImportCss) {
+    rebased = await rewriteImportCss(content, rebaseFn)
+  }
+
+  return {
+    file,
+    contents: rebased,
+  }
+}
+const rewriteImportCss = (
+  css: string,
+  replacer: CssUrlReplacer
+): Promise<string> => {
+  return asyncReplace(css, importCssRE, async (match) => {
+    const [matched, rawUrl] = match
+    return await doImportCSSReplace(rawUrl, matched, replacer)
+  })
+}
+
+const asyncReplace = async (
+  input: string,
+  re: RegExp,
+  replacer: (match: RegExpExecArray) => string | Promise<string>
+): Promise<string> => {
+  let match: RegExpExecArray | null
+  let remaining = input
+  let rewritten = ''
+  while ((match = re.exec(remaining))) {
+    rewritten += remaining.slice(0, match.index)
+    rewritten += await replacer(match)
+    remaining = remaining.slice(match.index + match[0].length)
+  }
+  rewritten += remaining
+  return rewritten
+}
+
+const doImportCSSReplace = async (
+  rawUrl: string,
+  matched: string,
+  replacer: CssUrlReplacer
+) => {
+  let wrap = ''
+  const first = rawUrl[0]
+  if (first === `"` || first === `'`) {
+    wrap = first
+    rawUrl = rawUrl.slice(1, -1)
+  }
+  if (isExternalUrl(rawUrl) || isDataUrl(rawUrl) || rawUrl.startsWith('#')) {
+    return matched
+  }
+
+  return `@import ${wrap}${await replacer(rawUrl)}${wrap}`
+}
+
+export const externalRE = /^(https?:)?\/\//
+export const isExternalUrl = (url: string): boolean => externalRE.test(url)
+
+export const dataUrlRE = /^\s*data:/i
+export const isDataUrl = (url: string): boolean => dataUrlRE.test(url)
