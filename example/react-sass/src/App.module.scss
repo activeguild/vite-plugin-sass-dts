@@ -1,4 +1,4 @@
-@import '@/alias/_variables';
+@import '@/alias/_variables.scss';
 
 $green: #00c851;
 
@@ -13,9 +13,9 @@ $green: #00c851;
   }
 }
 
-
 .input {
   @media (min-width: 768px) {
     max-width: 370px;
   }
 }
+

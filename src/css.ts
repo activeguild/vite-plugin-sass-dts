@@ -31,7 +31,7 @@ export const parseCss = async (
     preferRelative: true,
   })
 
-  const internalImporter: Sass.LegacyImporter = (url, importer, done) => {
+  const internalImporter: Sass.Importer = (url, importer, done) => {
     resolveFn(url, importer).then((resolved) => {
       if (resolved) {
         rebaseUrls(resolved, fileName, config.resolve.alias, '$')
@@ -57,8 +57,10 @@ export const parseCss = async (
     file: fileName,
     includePaths: ['node_modules'],
     importer: finalImporter,
-    alias: config.resolve.alias,
+    // alias: config.resolve.alias,
   })
+
+  console.log('result :>> ', result)
 
   const splitted = result.css.toString().split(SPLIT_STR)
   return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
@@ -103,6 +105,8 @@ const rebaseUrls = async (
 ): Promise<Sass.LegacyImporterResult> => {
   file = path.resolve(file) // ensure os-specific flashes
   // in the same dir, no need to rebase
+  console.log('file :>> ', file)
+  console.log('rootFile :>> ', rootFile)
   const fileDir = path.dirname(file)
   const rootDir = path.dirname(rootFile)
 
@@ -111,7 +115,6 @@ const rebaseUrls = async (
   }
 
   const content = fs.readFileSync(file, 'utf-8')
-  console.log('content :>> ', content)
   const hasImportCss = importCssRE.test(content)
   if (!hasImportCss) {
     return { file }

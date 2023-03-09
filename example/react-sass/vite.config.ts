@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import sassDts from 'vite-plugin-sass-dts'
 import path from 'path'
+
 export default defineConfig({
   resolve: {
     alias: { '@/alias/': path.join(__dirname, '/src/assets/styles/alias/') },
