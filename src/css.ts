@@ -61,7 +61,7 @@ export const parseCss = async (
         includePaths: ['node_modules'],
         importer: finalImporter,
       },
-      (err, res) => {
+      (err: Error, res: Sass.Result) => {
         if (err) {
           reject(err)
         } else {
@@ -111,7 +111,7 @@ const rebaseUrls = async (
   rootFile: string,
   alias: Alias[],
   variablePrefix: string
-): Promise<Sass.LegacyImporterResult> => {
+): Promise<Sass.ImporterReturnType> => {
   file = path.resolve(file) // ensure os-specific flashes
   // in the same dir, no need to rebase
   const fileDir = path.dirname(file)
