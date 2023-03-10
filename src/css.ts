@@ -114,8 +114,6 @@ const rebaseUrls = async (
 ): Promise<Sass.LegacyImporterResult> => {
   file = path.resolve(file) // ensure os-specific flashes
   // in the same dir, no need to rebase
-  console.log('file :>> ', file)
-  console.log('rootFile :>> ', rootFile)
   const fileDir = path.dirname(file)
   const rootDir = path.dirname(rootFile)
 
