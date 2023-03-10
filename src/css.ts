@@ -47,20 +47,29 @@ export const parseCss = async (
 
   if (options.importer) {
     Array.isArray(options.importer)
-      ? finalImporter.unshift(...options.importer)
-      : finalImporter.unshift(options.importer)
+      ? finalImporter.push(...options.importer)
+      : finalImporter.push(options.importer)
   }
 
-  const result = sass.renderSync({
-    ...options,
-    data: await getData(file.toString(), fileName, options.additionalData),
-    file: fileName,
-    includePaths: ['node_modules'],
-    importer: finalImporter,
-    // alias: config.resolve.alias,
+  const data = await getData(file.toString(), fileName, options.additionalData)
+  const result = await new Promise<Sass.Result>((resolve, reject) => {
+    sass.render(
+      {
+        ...options,
+        data,
+        file: fileName,
+        includePaths: ['node_modules'],
+        importer: finalImporter,
+      },
+      (err, res) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(res)
+        }
+      }
+    )
   })
-
-  console.log('result :>> ', result)
 
   const splitted = result.css.toString().split(SPLIT_STR)
   return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
