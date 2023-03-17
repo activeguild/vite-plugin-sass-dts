@@ -1,7 +1,7 @@
 import prettier from 'prettier'
 const { resolveConfig } = prettier
 
-import type { PluginOption as VitePlugin } from 'vite'
+import type { Plugin as VitePlugin } from 'vite'
 import { main } from './main'
 import type { FinalConfig, PluginOptions } from './type'
 import { isCSSModuleRequest } from './util'
