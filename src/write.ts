@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs'
-import { dirname, basename } from 'node:path'
+import { dirname, basename, isAbsolute } from 'node:path'
 import prettier from 'prettier'
 const { format } = prettier
 
@@ -7,7 +7,7 @@ import { type Options } from 'prettier'
 import { PluginOptions } from 'type'
 import { getRelativePath } from './util'
 import path from 'path'
-const DEFAULT_TYPE_NAME = 'ClassNames'
+import { mkdir } from 'node:fs/promises'
 
 export const writeToFile = async (
   prettierOptions: Options,
@@ -37,16 +37,16 @@ export const writeToFile = async (
 
   const prettierdOutputFileString = format(outputFileString, prettierOptions)
 
-  writeFile(
-    formatWriteFileName(fileName),
-    `${prettierdOutputFileString}`,
-    (err) => {
-      if (err) {
-        console.log(err)
-        throw err
-      }
+  const writePath = formatWriteFilePath(fileName, options)
+
+  await ensureDirectoryExists(writePath)
+
+  writeFile(writePath, `${prettierdOutputFileString}`, (err) => {
+    if (err) {
+      console.log(err)
+      throw err
     }
-  )
+  })
 }
 
 export const getTypeName = (fileName: string, options?: PluginOptions) => {
@@ -64,8 +64,31 @@ export const getTypeName = (fileName: string, options?: PluginOptions) => {
 export const formatExportType = (key: string) =>
   `  readonly '${key}': '${key}';`
 
+export const formatWriteFilePath = (file: string, options?: PluginOptions) => {
+  let path = file
+  const src = options?.sourceDir
+  const dist = options?.outputDir
+
+  if (src && !isAbsolute(src)) {
+    throw new Error('vite-plugin-sass-dts sourceDir must be an absolute path')
+  }
+  if (dist && !isAbsolute(dist)) {
+    throw new Error('vite-plugin-sass-dts outputDir must be an absolute path')
+  }
+
+  if (src && dist) {
+    path = path.replace(src, dist)
+  }
+
+  return formatWriteFileName(path)
+}
+
 export const formatWriteFileName = (file: string) =>
   `${file}${file.endsWith('d.ts') ? '' : '.d.ts'}`
 
 export const formatExportTypeFileName = (file: string) =>
   basename(file.replace('.ts', ''))
+
+export const ensureDirectoryExists = async (file: string) => {
+  await mkdir(dirname(file), { recursive: true })
+}
