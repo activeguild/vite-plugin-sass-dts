@@ -7,7 +7,6 @@ import { type Options } from 'prettier'
 import { PluginOptions } from 'type'
 import { getRelativePath } from './util'
 import path from 'path'
-const DEFAULT_TYPE_NAME = 'ClassNames'
 
 export const writeToFile = async (
   prettierOptions: Options,
@@ -19,7 +18,7 @@ export const writeToFile = async (
   let exportTypes = ''
   const exportStyle = 'export = classNames;'
   for (const classNameKey of classNameKeys.keys()) {
-    exportTypes = `${exportTypes}\n${formatExportType(classNameKey)}`
+    exportTypes = `${exportTypes}\n${formatExportType(classNameKey, typeName)}`
   }
 
   let outputFileString = ''
@@ -58,11 +57,11 @@ export const getTypeName = (fileName: string, options?: PluginOptions) => {
     }
   }
 
-  return DEFAULT_TYPE_NAME
+  return undefined
 }
 
-export const formatExportType = (key: string) =>
-  `  readonly '${key}': '${key}';`
+export const formatExportType = (key: string, type = `'${key}'`) =>
+  `  readonly '${key}': ${type};`
 
 export const formatWriteFileName = (file: string) =>
   `${file}${file.endsWith('d.ts') ? '' : '.d.ts'}`
