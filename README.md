@@ -1,4 +1,4 @@
-<h1 align="center">vite-plugin-sass-dts ⚡ Welcome 😀</h1>
+h1 align="center">vite-plugin-sass-dts ⚡ Welcome 😀</h1>
 
 <p align="left">
   <a href="https://github.com/actions/setup-node"><img alt="GitHub Actions status" src="https://github.com/activeguild/vite-plugin-sass-dts/workflows/automatic%20release/badge.svg" style="max-width:100%;"></a>
@@ -26,6 +26,8 @@ npm i -D vite-plugin-sass-dts
 | global.generate      | boolean                                | Outputs the common style set in <b>additionalData</b> of <b>preprocessorOptions</b> as a global type definition file.                                                                                                                                                                                                                                                 |
 | global.outFile       | string                                 | Specify the file that outputs the global common style with an absolute path.Relative paths will be supported.                                                                                                                                                                                                                                                         |
 | typeName.replacement | string \| (fileName: string) => string | Type name can be changed to any value. (default is the classname key as a string. e.g. `theClassName: 'theClassName';`)                                                                                                                                                                                                                                               |
+| outDir | string | An absolute path to the output directory. If undefined, declaration files will be generated in the source directories.  `)                                                                                                                                                                                                                                               |
+| sourceDir | string | An absolute path to your source code directory. The plugin will replace this path with `outDir` option when writing declaration files. `)                                                                                                                                                                                                                                               | 
 
 ## Add it to vite.config.ts
 
@@ -78,6 +80,8 @@ export default defineConfig({
         generate: true,
         outFile: path.resolve(__dirname, './src/style.d.ts'),
       },
+      sourceDir: path.resolve(__dirname, './src'),
+      outDir: path.resolve(__dirname, './dist')
     }),
   ],
 })
@@ -114,9 +118,11 @@ Then save the following file ...
 }
 ```
 
-Saving the scss file creates a d.ts file in the same hierarchy.
+Saving the scss file creates a d.ts file in the `outDir` hierarchy.
 
-[src/App.scss.d.ts]
+> Note: if `outDir` is not set, declaration files are output to the same directory as the source files.
+
+[dist/App.scss.d.ts]
 
 ```ts
 import globalClassNames, { ClassNames as GlobalClassNames } from './style.d'
@@ -128,7 +134,7 @@ declare const classNames: typeof globalClassNames & {
 export = classNames
 ```
 
-The type definition is output to the output path of the common style specified in the option.
+The optional global type definition is output to the output path of the common style specified in the options.
 
 [src/style.d.ts]
 
