@@ -19,7 +19,7 @@ export const writeToFile = async (
   let exportTypes = ''
   const exportStyle = 'export = classNames;'
   for (const classNameKey of classNameKeys.keys()) {
-    exportTypes = `${exportTypes}\n${formatExportType(classNameKey)}`
+    exportTypes = `${exportTypes}\n${formatExportType(classNameKey, typeName)}`
   }
 
   let outputFileString = ''
@@ -58,11 +58,11 @@ export const getTypeName = (fileName: string, options?: PluginOptions) => {
     }
   }
 
-  return DEFAULT_TYPE_NAME
+  return undefined
 }
 
-export const formatExportType = (key: string) =>
-  `  readonly '${key}': '${key}';`
+export const formatExportType = (key: string, type = `'${key}'`) =>
+  `  readonly '${key}': ${type};`
 
 export const formatWriteFilePath = (file: string, options?: PluginOptions) => {
   let path = file
