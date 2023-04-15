@@ -12,6 +12,8 @@ export type PluginOptions = {
   global?: { generate: boolean; outFile: string }
   typeName?: { replacement: string | ((fileName: string) => string) }
   oneFile?: boolean
+  outputDir?: string
+  sourceDir?: string
 }
 
 export type CSS = { localStyle: string; globalStyle?: string }
