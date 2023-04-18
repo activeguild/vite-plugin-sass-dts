@@ -38,12 +38,12 @@ export default defineConfig({
         generate: true,
         outFile: path.resolve(__dirname, './src/style.d.ts'),
       },
-      typeName: {
-        replacement: (fileName) => {
-          const spilittedFileName = fileName.split('.')
-          return `${spilittedFileName[0]}Names`
-        },
-      },
+      // typeName: {
+      //   replacement: (fileName) => {
+      //     const spilittedFileName = fileName.split('.')
+      //     return `${spilittedFileName[0]}Names`
+      //   },
+      // },
     }),
   ],
 })
