@@ -1,7 +1,7 @@
 <template>
   <div>
-     <div :class="$styles.bar" />
-     <NuxtWelcome />
+    <div :class="$styles.bar" />
+    <NuxtWelcome />
   </div>
 </template>
 
