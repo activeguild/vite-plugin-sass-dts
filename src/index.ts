@@ -24,7 +24,7 @@ export default function Plugin(option: PluginOptions = {}): VitePlugin {
       return
     },
     transform(code, id) {
-      const fileName = id.replace(/(?:\?|&)(used|direct|inline)/, '')
+      const fileName = id.replace(/(?:\?|&)(used|direct|inline|vue).*/, '')
       if (
         !enabledMode.includes(cacheConfig.env.MODE) ||
         !isCSSModuleRequest(fileName)

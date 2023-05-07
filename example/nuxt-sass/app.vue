@@ -1,6 +1,7 @@
 <template>
   <div>
-    <NuxtWelcome />
+     <div :class="$styles.bar" />
+     <NuxtWelcome />
   </div>
 </template>
 
@@ -8,3 +9,10 @@
 import styles from './app.module.scss'
 console.log('styles :>> ', styles)
 </script>
+
+<style module lang="scss">
+.bar {
+  background-color: #dcfbec;
+  height: 50px;
+}
+</style>
