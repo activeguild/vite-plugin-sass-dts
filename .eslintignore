@@ -5,3 +5,4 @@ example
 tools
 .eslintrc.js
 .prettierrc.js
+pnpm-lock.yaml
