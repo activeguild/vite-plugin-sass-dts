@@ -37,7 +37,7 @@ export const main = (
 
             writeToFile(
               config.prettierOptions,
-              option.global.outFile,
+              option.global.outputFilePath,
               globalClassNameKeys
             )
           }

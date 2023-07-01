@@ -23,12 +23,14 @@ export const writeToFile = async (
   }
 
   let outputFileString = ''
-  if (options?.global?.outFile) {
+  if (options?.global?.outputFilePath) {
     const relativePath = getRelativePath(
       dirname(fileName),
-      dirname(options.global.outFile)
+      dirname(options.global.outputFilePath)
     )
-    const exportTypeFileName = formatExportTypeFileName(options.global.outFile)
+    const exportTypeFileName = formatExportTypeFileName(
+      options.global.outputFilePath
+    )
     outputFileString = `import globalClassNames from '${relativePath}${exportTypeFileName}'\n`
     outputFileString = `${outputFileString}declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
   } else {

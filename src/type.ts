@@ -9,7 +9,7 @@ export type AdditionalData =
 
 export type PluginOptions = {
   enabledMode?: ('development' | 'production')[]
-  global?: { generate: boolean; outFile: string }
+  global?: { generate: boolean; outputFilePath: string }
   typeName?: { replacement: string | ((fileName: string) => string) }
   outputDir?: string
   sourceDir?: string
