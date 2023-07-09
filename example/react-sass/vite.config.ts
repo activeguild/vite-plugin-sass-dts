@@ -36,7 +36,7 @@ export default defineConfig({
       enabledMode: ['development', 'production'],
       global: {
         generate: true,
-        outFile: path.resolve(__dirname, './src/style.d.ts'),
+        outputFilePath: path.resolve(__dirname, './src/style.d.ts'),
       },
       // typeName: {
       //   replacement: (fileName) => {
