@@ -37,7 +37,10 @@ export const writeToFile = async (
     outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}`
   }
 
-  const prettierdOutputFileString = format(outputFileString, prettierOptions)
+  const prettierdOutputFileString = await format(
+    outputFileString,
+    prettierOptions
+  )
 
   const writePath = formatWriteFilePath(fileName, options)
 
