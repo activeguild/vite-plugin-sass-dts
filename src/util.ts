@@ -16,10 +16,9 @@ export const getRelativePath = (
   from: string | undefined,
   to: string | undefined
 ) => {
-  const relativePath =
-    path.relative(path.dirname(from || ''), path.dirname(to || '')) || './'
+  const relativePath = path.relative(from || '', to || '') || './'
 
-  return relativePath.endsWith('..') ? `${relativePath}/` : relativePath
+  return !relativePath.endsWith('/') ? `${relativePath}/` : relativePath
 }
 
 export const toDashCase = (target: string) =>
