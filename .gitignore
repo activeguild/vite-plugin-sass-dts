@@ -105,3 +105,6 @@ dist
 
 # local
 .vscode
+
+# turbo
+.turbo
