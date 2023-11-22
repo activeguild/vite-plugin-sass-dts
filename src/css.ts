@@ -60,6 +60,7 @@ export const parseCss = async (
         file: fileName,
         includePaths: ['node_modules'],
         importer: finalImporter,
+        indentedSyntax: fileName.endsWith('.sass'),
       },
       (err: Error, res: Sass.Result) => {
         if (err) {
