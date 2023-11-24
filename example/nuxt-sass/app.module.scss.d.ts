@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly foo: 'foo'
+  readonly foo: "foo"
 }
 export = classNames

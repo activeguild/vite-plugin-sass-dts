@@ -6,8 +6,8 @@
 </template>
 
 <script setup>
-import styles from './app.module.scss'
-console.log('styles :>> ', styles)
+import styles from "./app.module.scss"
+console.log("styles :>> ", styles)
 </script>
 
 <style module lang="scss">
