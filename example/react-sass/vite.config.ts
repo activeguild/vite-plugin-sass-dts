@@ -38,6 +38,7 @@ export default defineConfig({
         generate: true,
         outputFilePath: path.resolve(__dirname, './src/@types/style.d.ts'),
       },
+      // prettierFilePath: path.resolve('../nuxt-sass/.prettierrc.cjs')
       // typeName: {
       //   replacement: (fileName) => {
       //     const spilittedFileName = fileName.split('.')

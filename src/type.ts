@@ -13,6 +13,7 @@ export type PluginOptions = {
   typeName?: { replacement: string | ((fileName: string) => string) }
   outputDir?: string
   sourceDir?: string
+  prettierFilePath?: string
 }
 
 export type CSS = { localStyle: string; globalStyle?: string }
