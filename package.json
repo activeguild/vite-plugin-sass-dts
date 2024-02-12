@@ -51,7 +51,7 @@
     "postcss-js": "^4.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "@types/prettier": "^2.7.3",
     "@types/sass": "1.43.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -60,15 +60,15 @@
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.10",
     "lint-staged": "^15.2.2",
-    "npm-check-updates": "^16.14.14",
+    "npm-check-updates": "^16.14.15",
     "postcss": "^8.4.35",
     "postcss-js": "^4.0.1",
     "prettier": "^3.2.5",
     "sass": "^1.70.0",
-    "tsup": "^8.0.1",
+    "tsup": "^8.0.2",
     "turbo": "^1.12.3",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12"
+    "vite": "^5.1.1"
   },
   "peerDependencies": {
     "postcss": "^8",
