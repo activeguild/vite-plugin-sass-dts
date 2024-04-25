@@ -17,7 +17,9 @@ export const writeToFile = async (
 ) => {
   const typeName = getTypeName(path.basename(fileName), options)
   let exportTypes = ''
-  const exportStyle = 'export = classNames;'
+  const exportStyle = options?.esmExport
+    ? 'export default classNames;'
+    : 'export = classNames;'
   for (const classNameKey of classNameKeys.keys()) {
     exportTypes = `${exportTypes}\n${formatExportType(classNameKey, typeName)}`
   }
