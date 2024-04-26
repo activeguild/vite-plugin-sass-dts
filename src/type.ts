@@ -11,6 +11,7 @@ export type PluginOptions = {
   enabledMode?: ('development' | 'production')[]
   global?: { generate: boolean; outputFilePath: string }
   typeName?: { replacement: string | ((fileName: string) => string) }
+  esmExport?: boolean
   outputDir?: string
   sourceDir?: string
   prettierFilePath?: string
