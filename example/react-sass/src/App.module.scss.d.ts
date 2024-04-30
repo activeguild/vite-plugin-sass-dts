@@ -1,6 +1,5 @@
 import globalClassNames from './@types/style.d'
 declare const classNames: typeof globalClassNames & {
-  readonly zoo: 'zoo'
   readonly green: 'green'
   readonly 'header-1': 'header-1'
   readonly active: 'active'
