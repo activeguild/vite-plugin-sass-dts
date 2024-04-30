@@ -18,8 +18,8 @@ export const getRelativePath = (
   to: string | undefined
 ) => {
   let relativePath = path.relative(from || '', to || '') || './'
-  if (path.sep !== "/") {
-    relativePath = relativePath.replaceAll(path.sep, "/")
+  if (path.sep !== '/') {
+    relativePath = relativePath.replaceAll(path.sep, '/')
   }
   relativePath = sameDirRE.test(relativePath)
     ? relativePath
