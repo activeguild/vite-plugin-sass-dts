@@ -7,4 +7,4 @@ declare const classNames: typeof globalClassNames & {
   readonly input: 'input'
   readonly test: 'test'
 }
-export = classNames
+export default classNames

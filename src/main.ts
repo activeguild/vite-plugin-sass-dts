@@ -38,7 +38,8 @@ export const main = (
             writeToFile(
               config.prettierOptions,
               option.global.outputFilePath,
-              globalClassNameKeys
+              globalClassNameKeys,
+              { esmExport: option.esmExport }
             )
           }
         } catch (e) {
