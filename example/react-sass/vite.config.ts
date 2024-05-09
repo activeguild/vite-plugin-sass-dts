@@ -8,6 +8,9 @@ export default defineConfig({
     alias: { '@/alias/': path.join(__dirname, '/src/assets/styles/alias/') },
   },
   css: {
+    modules: {
+      exportGlobals: true,
+    },
     preprocessorOptions: {
       scss: {
         additionalData: `@use "@/styles" as common;`,

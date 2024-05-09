@@ -1,5 +1,7 @@
 $primary: violet;
 
-.row {
-  display: flex;
+:global {
+  .row {
+    display: flex;
+  }
 }
