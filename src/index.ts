@@ -40,5 +40,10 @@ export default function Plugin(option: PluginOptions = {}): VitePlugin {
         resolve(main(fileName, cacheConfig, option))
       )
     },
+    watchChange(id) {
+      if (isCSSModuleRequest(id)) {
+        this.addWatchFile(id)
+      }
+    },
   }
 }
