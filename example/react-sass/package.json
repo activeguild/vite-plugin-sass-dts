@@ -2,7 +2,7 @@
   "name": "vite-plugin-sass-dts-example",
   "version": "1.0.0",
   "engines": {
-    "node": "20.x"
+    "node": "21"
   },
   "type": "module",
   "description": "This is an example of using vite-plugin-sass-dts.",
