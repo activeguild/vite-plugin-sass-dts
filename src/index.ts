@@ -12,7 +12,6 @@ export default function Plugin(option: PluginOptions = {}): VitePlugin {
   return {
     name: 'vite-plugin-sass-dts',
     async configResolved(config) {
-      console.log('config.root :>> ', config.root)
       const prettierOptions =
         (await resolveConfig(option.prettierFilePath || config.root)) || {}
       cacheConfig = {
