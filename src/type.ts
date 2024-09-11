@@ -14,6 +14,7 @@ export type PluginOptions = {
   esmExport?: boolean
   outputDir?: string
   sourceDir?: string
+  excludePath?: string | RegExp | Array<string | RegExp>
   prettierFilePath?: string
 }
 

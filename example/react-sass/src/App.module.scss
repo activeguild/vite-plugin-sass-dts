@@ -20,3 +20,9 @@ $green: #00c851;
 .test {
   @apply px-1.5;
 }
+
+@supports (--num: 1.5) {
+  .myclass {
+    display: block;
+  }
+}

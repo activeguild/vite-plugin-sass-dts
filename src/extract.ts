@@ -3,6 +3,7 @@ import type { CSSJSObj, GetParseCaseFunction } from './type'
 
 // [Note]: @apply for Tailwind
 const importRe = new RegExp(/^(@import|@apply)/)
+const supportRe = new RegExp(/^(@support)/)
 const keySeparatorRe = new RegExp(/(?=[\s.:[\]><+,()])/g)
 
 export const extractClassNameKeys = (
@@ -12,14 +13,18 @@ export const extractClassNameKeys = (
 ): Map<string, boolean> => {
   return Object.entries(obj).reduce<Map<string, boolean>>(
     (curr, [key, value]) => {
+      console.log(key, value)
       if (importRe.test(key)) return curr
       const splitKeys = key.split(keySeparatorRe)
-      for (const splitKey of splitKeys) {
-        if (parentKey === ':export' || splitKey.startsWith('.')) {
-          if (toParseCase) {
-            curr.set(toParseCase(splitKey.replace('.', '').trim()), true)
-          } else {
-            curr.set(splitKey.replace('.', '').trim(), true)
+
+      if (!supportRe.test(key)) {
+        for (const splitKey of splitKeys) {
+          if (parentKey === ':export' || splitKey.startsWith('.')) {
+            if (toParseCase) {
+              curr.set(toParseCase(splitKey.replace('.', '').trim()), true)
+            } else {
+              curr.set(splitKey.replace('.', '').trim(), true)
+            }
           }
         }
       }

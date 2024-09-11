@@ -2,6 +2,7 @@ import { FC } from 'react'
 import styles from './App.module.scss'
 import { classNamesFunc } from 'classnames-generics'
 import { User } from './User/User'
+import styles2 from './exclude/Exclude.module.scss'
 
 const classNames = classNamesFunc<keyof typeof styles>()
 type Props = {

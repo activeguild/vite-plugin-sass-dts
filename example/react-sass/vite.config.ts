@@ -42,6 +42,7 @@ export default defineConfig({
         outputFilePath: path.resolve(__dirname, './src/@types/style.d.ts'),
       },
       prettierFilePath: path.resolve('../../.prettierrc.cjs'),
+      excludePath: ['./src/exclude/*'],
       esmExport: true,
       // typeName: {
       //   replacement: (fileName) => {
