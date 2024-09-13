@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import sassDts from 'vite-plugin-sass-dts'
 import path from 'path'
+import { NodePackageImporter } from 'sass-embedded'
 
 export default defineConfig({
   resolve: {
@@ -21,15 +22,19 @@ export default defineConfig({
         //     content,
         //   ].join('\n');
         // },
-        importer(...args) {
-          if (args[0] !== '@/styles') {
-            return
-          }
+        api: 'modern',
+        importers: [
+          new NodePackageImporter(),
+          function (...args) {
+            if (args[0] !== '@/styles') {
+              return
+            }
 
-          return {
-            file: `${path.resolve(__dirname, './src/assets/styles')}`,
-          }
-        },
+            return {
+              file: `${path.resolve(__dirname, './src/assets/styles')}`,
+            }
+          },
+        ],
       },
     },
   },

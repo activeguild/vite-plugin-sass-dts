@@ -1,5 +1,5 @@
 // import { Importer, ImporterReturnType, renderSync } from 'sass'
-import type Sass from 'sass'
+import Sass from 'sass'
 import { getPreprocessorOptions } from './options'
 import type { AdditionalData, CSS, CssUrlReplacer, FinalConfig } from './type'
 import { createRequire } from 'node:module'
@@ -50,6 +50,11 @@ export const parseCss = async (
       ? finalImporter.push(...options.importer)
       : finalImporter.push(options.importer)
   }
+  if (options.importers) {
+    Array.isArray(options.importers)
+      ? finalImporter.push(...options.importers)
+      : finalImporter.push(options.importers)
+  }
 
   const data = await getData(file.toString(), fileName, options.additionalData)
   const result = await new Promise<Sass.Result>((resolve, reject) => {
@@ -57,6 +62,7 @@ export const parseCss = async (
       {
         ...options,
         data,
+        pkgImporter: new sass.NodePackageImporter(),
         file: fileName,
         includePaths: ['node_modules'],
         importer: finalImporter,
@@ -71,6 +77,7 @@ export const parseCss = async (
       }
     )
   })
+  console.log('hoge4')
 
   const splitted = result.css.toString().split(SPLIT_STR)
   return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
