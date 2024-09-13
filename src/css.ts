@@ -77,7 +77,6 @@ export const parseCss = async (
       }
     )
   })
-  console.log('hoge4')
 
   const splitted = result.css.toString().split(SPLIT_STR)
   return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
