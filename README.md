@@ -8,6 +8,10 @@
 
 A plugin that automatically creates a type file when using the CSS module type-safely.
 
+## Plans for future revisions
+- Improve performance when using the latest API of sass.
+- Avoid outputting unnecessary classes when using the latest API of sass.
+
 ## Demo
 
 <img src="https://user-images.githubusercontent.com/39351982/138745772-8b218863-fe28-4573-a86a-fc10a7ab1ac7.gif" width="600" />
@@ -17,6 +21,9 @@ A plugin that automatically creates a type file when using the CSS module type-s
 ```bash
 npm i -D vite-plugin-sass-dts
 ```
+
+For version 1.3.27 or later, please use the latest [sass-embedded](https://www.npmjs.com/package/sass-embedded) package; 
+we have confirmed that it does not work with the [sass](https://www.npmjs.com/package/sass) package.
 
 ## Options
 

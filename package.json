@@ -64,17 +64,17 @@
     "postcss": "^8.4.38",
     "postcss-js": "^4.0.1",
     "prettier": "^3.2.5",
-    "sass": "^1.75.0",
+    "sass-embedded": "^1.78.0",
     "tsup": "^8.0.2",
     "turbo": "^1.13.3",
     "typescript": "^5.4.5",
-    "vite": "^5.2.10"
+    "vite": "^5.4.5"
   },
   "peerDependencies": {
     "postcss": "^8",
     "prettier": "^2.7 || ^3",
-    "sass": "*",
-    "vite": ">=3"
+    "vite": ">=3",
+    "sass-embedded": "^1.78.0"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [

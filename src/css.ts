@@ -1,4 +1,4 @@
-import Sass from 'sass'
+import Sass from 'sass-embedded'
 import { getPreprocessorOptions } from './options'
 import type { AdditionalData, CSS, CssUrlReplacer, FinalConfig } from './type'
 import { createRequire } from 'node:module'

@@ -13,7 +13,6 @@ export const extractClassNameKeys = (
 ): Map<string, boolean> => {
   return Object.entries(obj).reduce<Map<string, boolean>>(
     (curr, [key, value]) => {
-      console.log(key, value)
       if (importRe.test(key)) return curr
       const splitKeys = key.split(keySeparatorRe)
 

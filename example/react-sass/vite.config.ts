@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import sassDts from 'vite-plugin-sass-dts'
 import path from 'path'
-import { NodePackageImporter, Importer } from 'sass'
+import { NodePackageImporter, Importer } from 'sass-embedded'
 import { URL } from 'url'
 
 export default defineConfig({
@@ -28,7 +28,6 @@ export default defineConfig({
           new NodePackageImporter(),
           {
             findFileUrl: async function (...args) {
-              console.log(args)
               if (args[0] !== '@/styles') {
                 return
               }
