@@ -18,7 +18,9 @@ export const App: FC<Props> = (props) => {
         styles.row
       )}
     >
-      <p style={{ color: styles.green }}>vite-plugin-sass-dts-example</p>
+      <p className={styles['ratio']} style={{ color: styles.green }}>
+        vite-plugin-sass-dts-example
+      </p>
       <User />
     </header>
   )

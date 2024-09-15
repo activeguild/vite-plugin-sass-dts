@@ -34,7 +34,12 @@ export const getPreprocessorOptions = (config: FinalConfig) => {
     !config.css.preprocessorOptions ||
     !config.css.preprocessorOptions.scss
   ) {
-    return { additionalData, includePaths, importer }
+    return {
+      additionalData,
+      includePaths,
+      importer,
+      alias: config.resolve.alias,
+    }
   }
 
   return config.css.preprocessorOptions.scss
