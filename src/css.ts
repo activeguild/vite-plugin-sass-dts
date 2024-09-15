@@ -1,5 +1,4 @@
-// import { Importer, ImporterReturnType, renderSync } from 'sass'
-import type Sass from 'sass'
+import Sass from 'sass'
 import { getPreprocessorOptions } from './options'
 import type { AdditionalData, CSS, CssUrlReplacer, FinalConfig } from './type'
 import { createRequire } from 'node:module'
@@ -7,6 +6,7 @@ import { Alias, normalizePath } from 'vite'
 import path from 'path'
 import fs from 'fs'
 import { importCssRE } from './util'
+import { pathToFileURL } from 'node:url'
 
 const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
 
@@ -31,7 +31,11 @@ export const parseCss = async (
     preferRelative: true,
   })
 
-  const internalImporter: Sass.Importer = (url, importer, done) => {
+  const internalImporter: Sass.LegacyImporter<'async'> = (
+    url,
+    importer,
+    done
+  ) => {
     resolveFn(url, importer).then((resolved) => {
       if (resolved) {
         rebaseUrls(resolved, fileName, config.resolve.alias, '$')
@@ -43,37 +47,57 @@ export const parseCss = async (
     })
   }
 
-  const finalImporter = [internalImporter]
-
-  if (options.importer) {
-    Array.isArray(options.importer)
-      ? finalImporter.push(...options.importer)
-      : finalImporter.push(options.importer)
-  }
-
   const data = await getData(file.toString(), fileName, options.additionalData)
-  const result = await new Promise<Sass.Result>((resolve, reject) => {
-    sass.render(
-      {
-        ...options,
-        data,
-        file: fileName,
-        includePaths: ['node_modules'],
-        importer: finalImporter,
-        indentedSyntax: fileName.endsWith('.sass'),
-      },
-      (err: Error, res: Sass.Result) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(res)
-        }
-      }
-    )
-  })
+  const finalImporter: Sass.LegacyAsyncImporter[] = []
 
-  const splitted = result.css.toString().split(SPLIT_STR)
-  return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
+  if (options.api !== 'modern' && options.api !== 'modern-compiler') {
+    if (options.importer) {
+      Array.isArray(options.importer)
+        ? finalImporter.push(...options.importer)
+        : finalImporter.push(options.importer)
+    }
+
+    finalImporter.push(internalImporter)
+
+    const result = await new Promise<Sass.LegacyResult>((resolve, reject) => {
+      sass.render(
+        {
+          ...options,
+          data,
+          pkgImporter: new sass.NodePackageImporter(),
+          file: fileName,
+          includePaths: ['node_modules'],
+          importer: finalImporter,
+          indentedSyntax: fileName.endsWith('.sass'),
+        },
+        (err: Error, res: Sass.LegacyResult) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(res)
+          }
+        }
+      )
+    })
+
+    const splitted = result.css.toString().split(SPLIT_STR)
+    return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
+  } else {
+    if (options.importers) {
+      Array.isArray(options.importers)
+        ? finalImporter.push(...options.importers)
+        : finalImporter.push(options.importers)
+    }
+
+    const sassOptions = { ...options }
+    sassOptions.url = pathToFileURL(fileName)
+    sassOptions.pkgImporter = new sass.NodePackageImporter()
+    sassOptions.importers = finalImporter
+
+    const result = await sass.compileStringAsync(data, sassOptions)
+    const splitted = result.css.toString().split(SPLIT_STR)
+    return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
+  }
 }
 
 const getData = (
@@ -112,7 +136,7 @@ const rebaseUrls = async (
   rootFile: string,
   alias: Alias[],
   variablePrefix: string
-): Promise<Sass.ImporterReturnType> => {
+): Promise<Sass.LegacyImporterResult> => {
   file = path.resolve(file) // ensure os-specific flashes
   // in the same dir, no need to rebase
   const fileDir = path.dirname(file)
