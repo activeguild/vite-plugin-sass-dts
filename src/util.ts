@@ -1,5 +1,5 @@
 import path from 'node:path'
-import type { Exception } from 'sass'
+import type { Exception } from 'sass-embedded'
 
 export const cssLangs = `\\.(css|sass|scss)($|\\?)`
 export const cssLangReg = new RegExp(cssLangs)

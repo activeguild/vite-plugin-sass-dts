@@ -119,7 +119,7 @@ const loadSassPreprocessor = (config: FinalConfig): any => {
       return loadedSassPreprocessor
     }
     const fallbackPaths = _require.resolve.paths?.('sass-embedded') || []
-    const resolved = _require.resolve('sass', {
+    const resolved = _require.resolve('sass-embedded', {
       paths: [config.root, ...fallbackPaths],
     })
     return (loadedSassPreprocessor = _require(resolved))
