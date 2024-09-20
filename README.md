@@ -18,9 +18,6 @@ A plugin that automatically creates a type file when using the CSS module type-s
 npm i -D vite-plugin-sass-dts
 ```
 
-For version 1.3.27 or later, please use the latest [sass-embedded](https://www.npmjs.com/package/sass-embedded) package;
-we have confirmed that it does not work with the [sass](https://www.npmjs.com/package/sass) package.
-
 ## Options
 
 | Parameter             | Type                                   | Description                                                                                                                                                                                                                                                                                                                                                           |
