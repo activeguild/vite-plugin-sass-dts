@@ -24,7 +24,7 @@ export const parseCss = async (
 
   const options = getPreprocessorOptions(config)
   const resolveFn = config.createResolver({
-    extensions: ['.scss', '.sass', '.css'],
+    extensions: ['.scss', '.sass', '.pcss', '.css'],
     mainFields: ['sass', 'style'],
     tryIndex: true,
     tryPrefix: '_',
