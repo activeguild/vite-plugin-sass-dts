@@ -16,6 +16,7 @@ export type PluginOptions = {
   sourceDir?: string
   excludePath?: string | RegExp | Array<string | RegExp>
   prettierFilePath?: string
+  useNamedExport?: boolean
 }
 
 export type CSS = { localStyle: string; globalStyle?: string }

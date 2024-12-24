@@ -38,9 +38,15 @@ export const writeToFile = async (
       options.global.outputFilePath
     )
     outputFileString = `import globalClassNames from '${relativePath}${exportTypeFileName}'\n`
-    outputFileString = `${outputFileString}\n${namedExports}\n\ndeclare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
+    outputFileString = `declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
+    if (options?.useNamedExport) {
+      outputFileString = `${outputFileString}\n${namedExports}\n\n`
+    }
   } else {
-    outputFileString = `${namedExports}\n\ndeclare const classNames: {${exportTypes}\n};\n${exportStyle}`
+    outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}`
+    if (options?.useNamedExport) {
+      outputFileString = `${outputFileString}\n\n${namedExports}`
+    }
   }
 
   const prettierdOutputFileString = await format(
