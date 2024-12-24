@@ -1,7 +1,7 @@
 import path from 'node:path'
 import type { Exception } from 'sass-embedded'
 
-export const cssLangs = `\\.(css|sass|scss)($|\\?)`
+export const cssLangs = `\\.(css|pcss|sass|scss)($|\\?)`
 export const cssLangReg = new RegExp(cssLangs)
 export const cssModuleReg = new RegExp(`\\.module${cssLangs}`)
 export const importCssRE = /@import ('[^']+\.css'|"[^"]+\.css"|[^'")]+\.css)/
