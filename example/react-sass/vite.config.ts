@@ -58,7 +58,7 @@ export default defineConfig({
       //     return `${spilittedFileName[0]}Names`
       //   },
       // },
-      useNamedExport: false,
+      // useNamedExport: false,
     }),
   ],
 })
