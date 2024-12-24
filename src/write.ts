@@ -17,11 +17,15 @@ export const writeToFile = async (
 ) => {
   const typeName = getTypeName(path.basename(fileName), options)
   let exportTypes = ''
+  let namedExports = ''
   const exportStyle = options?.esmExport
     ? 'export default classNames;'
     : 'export = classNames;'
   for (const classNameKey of classNameKeys.keys()) {
     exportTypes = `${exportTypes}\n${formatExportType(classNameKey, typeName)}`
+    namedExports = `${namedExports}\nexport const ${classNameKey}: '${
+      typeName ?? classNameKey
+    }';`
   }
 
   let outputFileString = ''
@@ -34,9 +38,9 @@ export const writeToFile = async (
       options.global.outputFilePath
     )
     outputFileString = `import globalClassNames from '${relativePath}${exportTypeFileName}'\n`
-    outputFileString = `${outputFileString}declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
+    outputFileString = `${outputFileString}\n${namedExports}\n\ndeclare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
   } else {
-    outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}`
+    outputFileString = `${namedExports}\n\ndeclare const classNames: {${exportTypes}\n};\n${exportStyle}`
   }
 
   const prettierdOutputFileString = await format(
