@@ -4,7 +4,7 @@ import prettier from 'prettier'
 const { format } = prettier
 
 import { type Options } from 'prettier'
-import { PluginOptions } from 'type'
+import { ContentReplacer, PluginOptions } from 'type'
 import { getRelativePath } from './util'
 import path from 'path'
 import { mkdir } from 'node:fs/promises'
@@ -15,12 +15,15 @@ export const writeToFile = async (
   classNameKeys: Map<string, boolean>,
   options?: PluginOptions
 ) => {
-  const typeName = getTypeName(path.basename(fileName), options)
+  const baseName = path.basename(fileName)
+  const typeName = getReplacerResult(baseName, options?.typeName)
+  const exportName =
+    getReplacerResult(baseName, options?.exportName) ?? 'classNames'
   let exportTypes = ''
   let namedExports = ''
   const exportStyle = options?.esmExport
-    ? 'export default classNames;'
-    : 'export = classNames;'
+    ? `export default ${exportName};`
+    : `export = ${exportName};`
   for (const classNameKey of classNameKeys.keys()) {
     exportTypes = `${exportTypes}\n${formatExportType(classNameKey, typeName)}`
     namedExports = `${namedExports}\nexport const ${classNameKey}: '${
@@ -38,12 +41,12 @@ export const writeToFile = async (
       options.global.outputFilePath
     )
     outputFileString = `import globalClassNames from '${relativePath}${exportTypeFileName}'\n`
-    outputFileString = `declare const classNames: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
+    outputFileString = `declare const ${exportName}: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
     if (options?.useNamedExport) {
       outputFileString = `${outputFileString}\n${namedExports}\n\n`
     }
   } else {
-    outputFileString = `declare const classNames: {${exportTypes}\n};\n${exportStyle}`
+    outputFileString = `declare const ${exportName}: {${exportTypes}\n};\n${exportStyle}`
     if (options?.useNamedExport) {
       outputFileString = `${outputFileString}\n\n${namedExports}`
     }
@@ -66,12 +69,15 @@ export const writeToFile = async (
   })
 }
 
-export const getTypeName = (fileName: string, options?: PluginOptions) => {
-  if (options && options.typeName && options.typeName.replacement) {
-    if (typeof options.typeName.replacement === 'function') {
-      return options.typeName.replacement(fileName)
+export const getReplacerResult = (
+  fileName: string,
+  replacer?: ContentReplacer
+) => {
+  if (replacer && replacer.replacement) {
+    if (typeof replacer.replacement === 'function') {
+      return replacer.replacement(fileName)
     } else {
-      return options.typeName.replacement
+      return replacer.replacement
     }
   }
 
