@@ -10,7 +10,8 @@ export type AdditionalData =
 export type PluginOptions = {
   enabledMode?: ('development' | 'production')[]
   global?: { generate: boolean; outputFilePath: string }
-  typeName?: { replacement: string | ((fileName: string) => string) }
+  typeName?: ContentReplacer
+  exportName?: ContentReplacer
   esmExport?: boolean
   outputDir?: string
   sourceDir?: string
@@ -27,6 +28,10 @@ export type CSSJSObj = Record<
 >
 
 export type GetParseCaseFunction = ((target: string) => string) | undefined
+
+export type ContentReplacer = {
+  replacement: string | ((fileName: string) => string)
+}
 
 export type CssUrlReplacer = (
   url: string,
