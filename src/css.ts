@@ -83,7 +83,15 @@ export const parseCss = async (
     const splitted = result.css.toString().split(SPLIT_STR)
     const localStyle = splitted[1] || ''
     const globalStyle = splitted[0]
-    const sourceMap = extractSourceMapComment(result.css.toString())
+    let sourceMap = extractSourceMapComment(result.css.toString())
+
+    // If no embedded source map found but source map data exists, embed it
+    if (!sourceMap && result.map && options.sourceMap) {
+      const sourceMapJson = JSON.stringify(result.map)
+      const sourceMapDataUri = `data:application/json;charset=utf-8,${encodeURIComponent(sourceMapJson)}`
+      sourceMap = `/*# sourceMappingURL=${sourceMapDataUri} */`
+    }
+
     return { localStyle, globalStyle, sourceMap }
   } else {
     if (options.importers) {
@@ -101,7 +109,15 @@ export const parseCss = async (
     const splitted = result.css.toString().split(SPLIT_STR)
     const localStyle = splitted[1] || ''
     const globalStyle = splitted[0]
-    const sourceMap = extractSourceMapComment(result.css.toString())
+    let sourceMap = extractSourceMapComment(result.css.toString())
+
+    // If no embedded source map found but source map data exists, embed it
+    if (!sourceMap && result.sourceMap && options.sourceMap) {
+      const sourceMapJson = JSON.stringify(result.sourceMap)
+      const sourceMapDataUri = `data:application/json;charset=utf-8,${encodeURIComponent(sourceMapJson)}`
+      sourceMap = `/*# sourceMappingURL=${sourceMapDataUri} */`
+    }
+
     return { localStyle, globalStyle, sourceMap }
   }
 }

@@ -24,6 +24,10 @@ export default defineConfig({
         //   ].join('\n');
         // },
         api: 'modern',
+        sourceMap: true,
+        sourceMapIncludeSources: true,
+        sourceMapEmbedSources: true,
+        sourceMapEmbed: true,
         importers: [
           new NodePackageImporter(),
           {

@@ -1,0 +1,12 @@
+.test-source-map {
+  color: red;
+  background: blue;
+  
+  &:hover {
+    color: green;
+  }
+}
+
+.another-class {
+  padding: 10px;
+}
