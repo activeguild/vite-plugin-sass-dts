@@ -2,6 +2,7 @@ import prettier from 'prettier'
 const { resolveConfig } = prettier
 
 import { Plugin as VitePlugin, createFilter } from 'vite'
+import { join } from 'node:path'
 import { main } from './main'
 import type { FinalConfig, PluginOptions } from './type'
 import { isCSSModuleRequest } from './util'
@@ -15,7 +16,9 @@ export default function Plugin(option: PluginOptions = {}): VitePlugin {
     async configResolved(config) {
       filter = createFilter(undefined, option.excludePath)
       const prettierOptions =
-        (await resolveConfig(option.prettierFilePath || config.root)) || {}
+        (await resolveConfig(
+          option.prettierFilePath || join(config.root, 'package.json')
+        )) || {}
       cacheConfig = {
         ...config,
         prettierOptions: { ...prettierOptions, filepath: '*.d.ts' },
