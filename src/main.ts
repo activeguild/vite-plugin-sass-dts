@@ -27,7 +27,13 @@ export const main = (
             objectify(parse(css.localStyle)),
             toParseCase
           )
-          writeToFile(config.prettierOptions, fileName, classNameKeys, option)
+          writeToFile(
+            config.prettierOptions,
+            fileName,
+            classNameKeys,
+            option,
+            css.sourceMap
+          )
 
           if (!!css.globalStyle && option.global?.generate) {
             const globalClassNameKeys = extractClassNameKeys(
@@ -39,7 +45,8 @@ export const main = (
               config.prettierOptions,
               option.global.outputFilePath,
               globalClassNameKeys,
-              { esmExport: option.esmExport }
+              { esmExport: option.esmExport },
+              css.sourceMap
             )
           }
         } catch (e) {

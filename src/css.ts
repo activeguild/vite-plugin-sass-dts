@@ -5,7 +5,7 @@ import { createRequire } from 'node:module'
 import { Alias, normalizePath } from 'vite'
 import path from 'path'
 import fs from 'fs'
-import { importCssRE } from './util'
+import { importCssRE, extractSourceMapComment } from './util'
 import { pathToFileURL } from 'node:url'
 
 const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
@@ -81,7 +81,10 @@ export const parseCss = async (
     })
 
     const splitted = result.css.toString().split(SPLIT_STR)
-    return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
+    const localStyle = splitted[1] || ''
+    const globalStyle = splitted[0]
+    const sourceMap = extractSourceMapComment(result.css.toString())
+    return { localStyle, globalStyle, sourceMap }
   } else {
     if (options.importers) {
       Array.isArray(options.importers)
@@ -96,7 +99,10 @@ export const parseCss = async (
 
     const result = await sass.compileStringAsync(data, sassOptions)
     const splitted = result.css.toString().split(SPLIT_STR)
-    return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
+    const localStyle = splitted[1] || ''
+    const globalStyle = splitted[0]
+    const sourceMap = extractSourceMapComment(result.css.toString())
+    return { localStyle, globalStyle, sourceMap }
   }
 }
 

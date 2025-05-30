@@ -48,3 +48,12 @@ export const collectionToObj = <V>(collection: Record<string, V>[]) => {
     return { ...acc, ...item }
   }, {})
 }
+
+// Regular expression to match embedded source map comments
+export const sourceMapRE =
+  /\/\*#\s*sourceMappingURL=data:application\/json[^*]*\*\//g
+
+export const extractSourceMapComment = (css: string): string | null => {
+  const match = css.match(sourceMapRE)
+  return match ? match[match.length - 1] : null
+}

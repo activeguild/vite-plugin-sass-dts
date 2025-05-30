@@ -13,7 +13,8 @@ export const writeToFile = async (
   prettierOptions: Options,
   fileName: string,
   classNameKeys: Map<string, boolean>,
-  options?: PluginOptions
+  options?: PluginOptions,
+  sourceMap?: string | null
 ) => {
   const baseName = path.basename(fileName)
   const typeName = getReplacerResult(baseName, options?.typeName)
@@ -50,6 +51,11 @@ export const writeToFile = async (
     if (options?.useNamedExport) {
       outputFileString = `${outputFileString}\n\n${namedExports}`
     }
+  }
+
+  // Add source map comment if present
+  if (sourceMap) {
+    outputFileString = `${outputFileString}\n${sourceMap}`
   }
 
   const prettierdOutputFileString = await format(

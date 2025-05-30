@@ -20,7 +20,11 @@ export type PluginOptions = {
   useNamedExport?: boolean
 }
 
-export type CSS = { localStyle: string; globalStyle?: string }
+export type CSS = {
+  localStyle: string
+  globalStyle?: string
+  sourceMap?: string | null
+}
 
 export type CSSJSObj = Record<
   string,
