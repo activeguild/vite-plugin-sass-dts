@@ -7,6 +7,7 @@ import path from 'path'
 import fs from 'fs'
 import { importCssRE } from './util'
 import { pathToFileURL } from 'node:url'
+import { fileURLToPath } from 'node:url'
 
 const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
 
@@ -48,7 +49,8 @@ export const parseCss = async (
   }
 
   const data = await getData(file.toString(), fileName, options.additionalData)
-  const finalImporter: Sass.LegacyAsyncImporter[] = []
+  const finalImporter: (Sass.LegacyAsyncImporter | Sass.Importer<'async'>)[] =
+    []
 
   if (options.api !== 'modern' && options.api !== 'modern-compiler') {
     if (options.importer) {
@@ -88,6 +90,46 @@ export const parseCss = async (
         ? finalImporter.push(...options.importers)
         : finalImporter.push(options.importers)
     }
+
+    // Create modern API importer that mimics Vite's approach for alias resolution
+    const modernImporter: Sass.Importer<'async'> = {
+      async canonicalize(url, context) {
+        const importer = context.containingUrl
+          ? fileURLToPath(context.containingUrl)
+          : fileName
+        const resolved = await resolveFn(url, importer)
+        if (
+          resolved &&
+          (resolved.endsWith('.css') ||
+            resolved.endsWith('.scss') ||
+            resolved.endsWith('.sass'))
+        ) {
+          return pathToFileURL(resolved)
+        }
+        return null
+      },
+      async load(canonicalUrl) {
+        const filePath = fileURLToPath(canonicalUrl)
+        const ext = path.extname(filePath)
+        let syntax: Sass.Syntax = 'scss'
+        if (ext === '.sass') {
+          syntax = 'indented'
+        } else if (ext === '.css') {
+          syntax = 'css'
+        }
+        const result = await rebaseUrls(
+          filePath,
+          fileName,
+          config.resolve.alias,
+          '$'
+        )
+        const contents =
+          result.contents ?? fs.readFileSync(result.file, 'utf-8')
+        return { contents, syntax, sourceMapUrl: canonicalUrl }
+      },
+    }
+
+    finalImporter.push(modernImporter)
 
     const sassOptions = { ...options }
     sassOptions.url = pathToFileURL(fileName)
