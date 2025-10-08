@@ -6,7 +6,7 @@ import { Alias, normalizePath } from 'vite'
 import path from 'path'
 import fs from 'fs'
 import { importCssRE } from './util'
-import { pathToFileURL } from 'node:url'
+import { pathToFileURL, fileURLToPath } from 'node:url'
 
 const SPLIT_STR = `/* vite-plugin-sass-dts */\n`
 
@@ -86,11 +86,116 @@ export const parseCss = async (
     // Modern API (modern / modern-compiler)
     const finalImporters: Sass.Importer<'async'>[] = []
 
+    // User-provided importers first (with legacy findFileUrl support)
     if (options.importers) {
-      Array.isArray(options.importers)
-        ? finalImporters.push(...options.importers)
-        : finalImporters.push(options.importers)
+      const userImporters = Array.isArray(options.importers)
+        ? options.importers
+        : [options.importers]
+
+      for (const importer of userImporters) {
+        // Support legacy findFileUrl (used by older Vite configs)
+        if (
+          'findFileUrl' in importer &&
+          typeof importer.findFileUrl === 'function'
+        ) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const legacyImporter = importer as any
+          finalImporters.push({
+            canonicalize: async (
+              url: string,
+              context: Sass.CanonicalizeContext
+            ) => {
+              const result = await legacyImporter.findFileUrl(url, {
+                fromImport: context.fromImport,
+              })
+              return result || null
+            },
+            load: async (canonicalUrl: URL) => {
+              let filePath = canonicalUrl.pathname
+
+              // If it's a directory, try to find index file
+              if (
+                fs.existsSync(filePath) &&
+                fs.statSync(filePath).isDirectory()
+              ) {
+                const indexFiles = [
+                  '_index.scss',
+                  'index.scss',
+                  '_index.sass',
+                  'index.sass',
+                ]
+                for (const indexFile of indexFiles) {
+                  const indexPath = path.join(filePath, indexFile)
+                  if (fs.existsSync(indexPath)) {
+                    filePath = indexPath
+                    break
+                  }
+                }
+              }
+
+              const contents = fs.readFileSync(filePath, 'utf-8')
+              return {
+                contents,
+                syntax: filePath.endsWith('.sass') ? 'indented' : 'scss',
+                sourceMapUrl: pathToFileURL(filePath),
+              } as Sass.ImporterResult
+            },
+          })
+        } else {
+          finalImporters.push(importer)
+        }
+      }
     }
+
+    // Add internal importer for additionalData resolution as fallback
+    const internalModernImporter: Sass.Importer<'async'> = {
+      canonicalize: async (url: string, context: Sass.CanonicalizeContext) => {
+        if (url.startsWith('file://')) return null
+
+        const importer = context.containingUrl
+          ? fileURLToPath(context.containingUrl)
+          : fileName
+
+        const resolved = await resolveFn(url, importer)
+
+        if (
+          resolved &&
+          (resolved.endsWith('.css') ||
+            resolved.endsWith('.scss') ||
+            resolved.endsWith('.sass'))
+        ) {
+          return pathToFileURL(resolved)
+        }
+        return null
+      },
+      load: async (canonicalUrl: URL) => {
+        const filePath = fileURLToPath(canonicalUrl)
+        const ext = path.extname(filePath)
+        let syntax: Sass.Syntax = 'scss'
+        if (ext === '.sass') {
+          syntax = 'indented'
+        } else if (ext === '.css') {
+          syntax = 'css'
+        }
+
+        const result = await rebaseUrls(
+          filePath,
+          fileName,
+          config.resolve.alias,
+          '$'
+        )
+        const contents =
+          result && 'contents' in result
+            ? result.contents
+            : fs.readFileSync(
+                result && 'file' in result ? result.file : filePath,
+                'utf-8'
+              )
+        return { contents, syntax, sourceMapUrl: canonicalUrl }
+      },
+    }
+
+    finalImporters.push(internalModernImporter)
 
     const sassOptions: Sass.StringOptions<'async'> = {
       ...options,

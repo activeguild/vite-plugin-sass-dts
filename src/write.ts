@@ -41,7 +41,7 @@ export const writeToFile = async (
       options.global.outputFilePath
     )
     outputFileString = `import globalClassNames from '${relativePath}${exportTypeFileName}'\n`
-    outputFileString = `declare const ${exportName}: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
+    outputFileString = `${outputFileString}declare const ${exportName}: typeof globalClassNames & {${exportTypes}\n};\n${exportStyle}`
     if (options?.useNamedExport) {
       outputFileString = `${outputFileString}\n${namedExports}\n\n`
     }

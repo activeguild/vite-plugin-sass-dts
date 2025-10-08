@@ -29,7 +29,11 @@ export const main = (
           )
           writeToFile(config.prettierOptions, fileName, classNameKeys, option)
 
-          if (!!css.globalStyle && option.global?.generate) {
+          if (
+            !!css.globalStyle &&
+            option.global?.generate &&
+            option.global?.outputFilePath
+          ) {
             const globalClassNameKeys = extractClassNameKeys(
               objectify(parse(css.globalStyle)),
               toParseCase
