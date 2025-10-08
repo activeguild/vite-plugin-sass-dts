@@ -48,9 +48,10 @@ export const parseCss = async (
   }
 
   const data = await getData(file.toString(), fileName, options.additionalData)
-  const finalImporter: Sass.LegacyAsyncImporter[] = []
+  if (options.api === 'legacy') {
+    // Legacy API
+    const finalImporter: Sass.LegacyAsyncImporter[] = []
 
-  if (options.api !== 'modern' && options.api !== 'modern-compiler') {
     if (options.importer) {
       Array.isArray(options.importer)
         ? finalImporter.push(...options.importer)
@@ -64,7 +65,6 @@ export const parseCss = async (
         {
           ...options,
           data,
-          pkgImporter: new sass.NodePackageImporter(),
           file: fileName,
           includePaths: ['node_modules'],
           importer: finalImporter,
@@ -83,16 +83,21 @@ export const parseCss = async (
     const splitted = result.css.toString().split(SPLIT_STR)
     return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
   } else {
+    // Modern API (modern / modern-compiler)
+    const finalImporters: Sass.Importer<'async'>[] = []
+
     if (options.importers) {
       Array.isArray(options.importers)
-        ? finalImporter.push(...options.importers)
-        : finalImporter.push(options.importers)
+        ? finalImporters.push(...options.importers)
+        : finalImporters.push(options.importers)
     }
 
-    const sassOptions = { ...options }
-    sassOptions.url = pathToFileURL(fileName)
-    sassOptions.pkgImporter = new sass.NodePackageImporter()
-    sassOptions.importers = finalImporter
+    const sassOptions: Sass.StringOptions<'async'> = {
+      ...options,
+      url: pathToFileURL(fileName),
+      importers: finalImporters,
+      syntax: fileName.endsWith('.sass') ? 'indented' : 'scss',
+    }
 
     const result = await sass.compileStringAsync(data, sassOptions)
     const splitted = result.css.toString().split(SPLIT_STR)
