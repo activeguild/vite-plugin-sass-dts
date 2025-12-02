@@ -35,6 +35,7 @@ we have confirmed that it does not work with the [sass](https://www.npmjs.com/pa
 | esmExport             | boolean                                | Specify dts export type. If enabled, going to use ESM style export `export default ...`. Otherwise `export = ...`.                                                                                                                                                                                                                                                    |
 | prettierFilePath      | string                                 | Specify the path to the prettier configuration file.                                                                                                                                                                                                                                                                                                                  |
 | useNamedExport        | boolean                                | Output also in named export.(default: false)                                                                                                                                                                                                                                                                                                                          |
+| legacyFileFormat      | boolean                                | Use legacy file naming format. If `true`, generates `*.scss.d.ts` (legacy). If `false`, generates `*.d.scss.ts` (TypeScript 5 compatible). (default: `false`)                                                                                                                                                                                                         |
 
 ## Add it to vite.config.ts
 
@@ -129,7 +130,9 @@ Saving the scss file creates a d.ts file in the `outputDir` hierarchy.
 
 > Note: if `outputDir` is not set, declaration files are output to the same directory as the source files.
 
-[dist/App.scss.d.ts]
+> **TypeScript 5 Compatibility**: By default, declaration files are generated in the format `*.d.scss.ts` (e.g., `App.module.d.scss.ts`) which is compatible with TypeScript 5's module resolution. To use the legacy format `*.scss.d.ts`, set `legacyFileFormat: true` in the plugin options.
+
+[dist/App.module.d.scss.ts]
 
 ```ts
 import globalClassNames, { ClassNames as GlobalClassNames } from './style.d'
