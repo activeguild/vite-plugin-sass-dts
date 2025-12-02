@@ -103,11 +103,31 @@ export const formatWriteFilePath = (file: string, options?: PluginOptions) => {
     path = path.replace(src, dist)
   }
 
-  return formatWriteFileName(path)
+  return formatWriteFileName(path, options?.legacyFileFormat)
 }
 
-export const formatWriteFileName = (file: string) =>
-  `${file}${file.endsWith('d.ts') ? '' : '.d.ts'}`
+export const formatWriteFileName = (file: string, legacyFormat = false) => {
+  if (file.endsWith('d.ts')) {
+    return file
+  }
+
+  if (legacyFormat) {
+    // Legacy format: sample.module.scss.d.ts
+    return `${file}.d.ts`
+  }
+
+  // TypeScript 5 format: sample.module.d.scss.ts
+  // Extract the file extension (e.g., .scss, .sass, .css)
+  const extensionMatch = file.match(/\.(scss|sass|css)$/)
+  if (extensionMatch) {
+    const extension = extensionMatch[1]
+    const basePath = file.slice(0, -extension.length - 1) // Remove .scss/.sass/.css
+    return `${basePath}.d.${extension}.ts`
+  }
+
+  // Fallback for unknown extensions
+  return `${file}.d.ts`
+}
 
 export const formatExportTypeFileName = (file: string) =>
   basename(file.replace('.ts', ''))
