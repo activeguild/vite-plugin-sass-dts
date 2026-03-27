@@ -2,7 +2,8 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     "target": "esnext",
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "baseUrl": "src",
     "outDir": "./dist/",
     "esModuleInterop": true,
