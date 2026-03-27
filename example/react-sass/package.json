@@ -2,7 +2,7 @@
   "name": "vite-plugin-sass-dts-example",
   "version": "1.0.0",
   "engines": {
-    "node": "21"
+    "node": ">=20.19.0"
   },
   "type": "module",
   "description": "This is an example of using vite-plugin-sass-dts.",
@@ -25,7 +25,7 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
     "@types/sass": "^1.45.0",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^6.0.0",
     "bootstrap": "^5.3.3",
     "bulma": "^1.0.2",
     "less": "^4.2.0",
@@ -34,7 +34,7 @@
     "sass-embedded": "^1.78.0",
     "turbo": "^1.13.3",
     "typescript": "^5.4.5",
-    "vite": "^5.4.4",
+    "vite": "^8.0.0",
     "vite-plugin-sass-dts": "^1.3.29"
   }
 }
