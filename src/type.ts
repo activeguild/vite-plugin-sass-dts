@@ -1,11 +1,27 @@
 import type { Options } from 'prettier'
-import type { ResolvedConfig } from 'vite'
+import type { Alias, ResolvedConfig } from 'vite'
+import type Sass from 'sass-embedded'
 
 export type FinalConfig = ResolvedConfig & { prettierOptions: Options }
 
 export type AdditionalData =
   | string
   | ((source: string, filename: string) => string | Promise<string>)
+
+// Vite's sass preprocessor option types changed across major versions
+// (the legacy api options were dropped from the types in vite 8), so the
+// plugin keeps its own shape covering both the legacy and modern APIs.
+export type SassPreprocessorOptions = Omit<
+  Sass.StringOptions<'async'>,
+  'importers' | 'url' | 'syntax'
+> & {
+  additionalData?: AdditionalData
+  api?: 'legacy' | 'modern' | 'modern-compiler'
+  importer?: Sass.LegacyAsyncImporter | Sass.LegacyAsyncImporter[]
+  importers?: Sass.Importer<'async'> | Sass.Importer<'async'>[]
+  includePaths?: string[]
+  alias?: Alias[]
+}
 
 export type PluginOptions = {
   enabledMode?: ('development' | 'production')[]

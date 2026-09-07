@@ -1,4 +1,8 @@
-import type { FinalConfig, GetParseCaseFunction } from './type'
+import type {
+  FinalConfig,
+  GetParseCaseFunction,
+  SassPreprocessorOptions,
+} from './type'
 import { toCamelCase, toDashCase } from './util'
 
 export const getParseCase = (config: FinalConfig): GetParseCaseFunction => {
@@ -26,21 +30,21 @@ export const getParseCase = (config: FinalConfig): GetParseCaseFunction => {
   return
 }
 
-export const getPreprocessorOptions = (config: FinalConfig) => {
-  let additionalData, includePaths, importer
-
+export const getPreprocessorOptions = (
+  config: FinalConfig
+): SassPreprocessorOptions => {
   if (
     !config.css ||
     !config.css.preprocessorOptions ||
     !config.css.preprocessorOptions.scss
   ) {
     return {
-      additionalData,
-      includePaths,
-      importer,
+      additionalData: undefined,
+      includePaths: undefined,
+      importer: undefined,
       alias: config.resolve.alias,
     }
   }
 
-  return config.css.preprocessorOptions.scss
+  return config.css.preprocessorOptions.scss as SassPreprocessorOptions
 }
