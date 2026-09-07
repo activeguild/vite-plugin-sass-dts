@@ -26,10 +26,15 @@ export const parseCss = async (
   const resolveFn = config.createResolver({
     extensions: ['.scss', '.sass', '.pcss', '.css'],
     mainFields: ['sass', 'style'],
+    conditions: ['sass', 'style'],
     tryIndex: true,
     tryPrefix: '_',
     preferRelative: true,
-  })
+    // Packages whose "main" points at a JS file would otherwise win over
+    // the stylesheet index resolution (same option vite uses internally).
+    skipMainField: true,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any)
 
   const internalImporter: Sass.LegacyImporter<'async'> = (
     url,
@@ -201,6 +206,14 @@ export const parseCss = async (
       ...options,
       url: pathToFileURL(fileName),
       importers: finalImporters,
+      // Mirror the legacy branch's `includePaths: ['node_modules']` so bare
+      // package imports keep working with the modern API (#108). Relative
+      // loadPaths are resolved against cwd by sass, so use absolute paths.
+      loadPaths: [
+        ...(options.loadPaths ?? []),
+        ...(options.includePaths ?? []),
+        ...findNodeModulesPaths(config.root),
+      ],
       syntax: fileName.endsWith('.sass') ? 'indented' : 'scss',
     }
 
@@ -208,6 +221,24 @@ export const parseCss = async (
     const splitted = result.css.toString().split(SPLIT_STR)
     return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
   }
+}
+
+// Collect every existing `node_modules` directory from the project root up
+// to the filesystem root, so workspace/monorepo setups (hoisted packages in
+// an ancestor `node_modules`) are covered as well.
+const findNodeModulesPaths = (root: string): string[] => {
+  const paths: string[] = []
+  let dir = path.resolve(root)
+  for (;;) {
+    const candidate = path.join(dir, 'node_modules')
+    if (fs.existsSync(candidate)) {
+      paths.push(candidate)
+    }
+    const parent = path.dirname(dir)
+    if (parent === dir) break
+    dir = parent
+  }
+  return paths
 }
 
 const getData = (
