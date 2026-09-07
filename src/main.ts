@@ -43,7 +43,7 @@ export const main = (
               config.prettierOptions,
               option.global.outputFilePath,
               globalClassNameKeys,
-              { esmExport: option.esmExport }
+              { esmExport: option.esmExport, formatter: option.formatter }
             )
           }
         } catch (e) {

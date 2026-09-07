@@ -1,10 +1,8 @@
 import { writeFile } from 'node:fs'
 import { dirname, basename, isAbsolute } from 'node:path'
-import prettier from 'prettier'
-const { format } = prettier
-
 import { type Options } from 'prettier'
 import { ContentReplacer, PluginOptions } from 'type'
+import { formatContent } from './format'
 import { getRelativePath } from './util'
 import path from 'path'
 import { mkdir } from 'node:fs/promises'
@@ -52,16 +50,18 @@ export const writeToFile = async (
     }
   }
 
-  const prettierdOutputFileString = await format(
-    outputFileString,
-    prettierOptions
-  )
-
   const writePath = formatWriteFilePath(fileName, options)
+
+  const formattedOutputFileString = await formatContent(
+    outputFileString,
+    writePath,
+    prettierOptions,
+    options?.formatter
+  )
 
   await ensureDirectoryExists(writePath)
 
-  writeFile(writePath, `${prettierdOutputFileString}`, (err) => {
+  writeFile(writePath, `${formattedOutputFileString}`, (err) => {
     if (err) {
       console.log(err)
       throw err

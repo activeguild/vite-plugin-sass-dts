@@ -12,6 +12,12 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(postcss@8.4.38)
     devDependencies:
+      '@biomejs/js-api':
+        specifier: ^6.0.0
+        version: 6.0.0(@biomejs/wasm-nodejs@2.5.12)
+      '@biomejs/wasm-nodejs':
+        specifier: ^2.5.12
+        version: 2.5.12
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.7
@@ -72,6 +78,23 @@ packages:
   '@aashutoshrathi/word-wrap@1.2.6':
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
+
+  '@biomejs/js-api@6.0.0':
+    resolution: {integrity: sha512-8HP7wexjQo5Np1J9h0B2x8L5G0GZpCacgjykxLHtvLPvF0hNqSG754oh8bxo+OSFDpVGMfSjmLO+ZY/5KbfjmQ==}
+    peerDependencies:
+      '@biomejs/wasm-bundler': ^2.5.0
+      '@biomejs/wasm-nodejs': ^2.5.0
+      '@biomejs/wasm-web': ^2.5.0
+    peerDependenciesMeta:
+      '@biomejs/wasm-bundler':
+        optional: true
+      '@biomejs/wasm-nodejs':
+        optional: true
+      '@biomejs/wasm-web':
+        optional: true
+
+  '@biomejs/wasm-nodejs@2.5.12':
+    resolution: {integrity: sha512-fCWM8aDn3X19cc4u/ewDVpx93CpNq4A3BtrGgBYkm/fb2LXNZMdhRUJ0gM2jgsGHTYQ7fz+I2XnPsvlSOqVx/w==}
 
   '@bufbuild/protobuf@1.10.0':
     resolution: {integrity: sha512-QDdVFLoN93Zjg36NoQPZfsVH9tZew7wKDKyV5qRdj8ntT4wQCOradQjRaTdwMhWUYsgKsvCINKKm87FdEk96Ag==}
@@ -2651,6 +2674,12 @@ packages:
 snapshots:
 
   '@aashutoshrathi/word-wrap@1.2.6': {}
+
+  '@biomejs/js-api@6.0.0(@biomejs/wasm-nodejs@2.5.12)':
+    optionalDependencies:
+      '@biomejs/wasm-nodejs': 2.5.12
+
+  '@biomejs/wasm-nodejs@2.5.12': {}
 
   '@bufbuild/protobuf@1.10.0': {}
 

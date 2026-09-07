@@ -154,4 +154,23 @@ describe('writeToFile', () => {
     expect(content).toContain('export default styles;')
     expect(content).toContain(`export const foo: "foo";`)
   })
+
+  it('formats with biome when the formatter option is set', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'vite-plugin-sass-dts-'))
+    const fileName = path.join(dir, 'style.module.scss')
+    const outFile = path.join(dir, 'style.module.d.scss.ts')
+
+    await writeToFile(prettierOptions, fileName, new Map([['foo', true]]), {
+      formatter: 'biome',
+    })
+
+    const content = await vi.waitFor(() => {
+      const written = readFileSync(outFile, 'utf-8')
+      expect(written).not.toBe('')
+      return written
+    })
+    // biome defaults to tab indentation, which proves biome ran
+    expect(content).toMatch(/\treadonly foo: "foo";/)
+    expect(content).toContain('export = classNames;')
+  })
 })

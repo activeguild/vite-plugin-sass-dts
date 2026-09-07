@@ -23,8 +23,11 @@ export type SassPreprocessorOptions = Omit<
   alias?: Alias[]
 }
 
+export type Formatter = 'prettier' | 'biome'
+
 export type PluginOptions = {
   enabledMode?: ('development' | 'production')[]
+  formatter?: Formatter
   global?: { generate: boolean; outputFilePath: string }
   typeName?: ContentReplacer
   exportName?: ContentReplacer
