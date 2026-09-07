@@ -34,6 +34,7 @@ we have confirmed that it does not work with the [sass](https://www.npmjs.com/pa
 | sourceDir             | string                                 | An absolute path to your source code directory. The plugin will replace this path with `outputDir` option when writing declaration files. `)                                                                                                                                                                                                                          |
 | esmExport             | boolean                                | Specify dts export type. If enabled, going to use ESM style export `export default ...`. Otherwise `export = ...`.                                                                                                                                                                                                                                                    |
 | prettierFilePath      | string                                 | Specify the path to the prettier configuration file.                                                                                                                                                                                                                                                                                                                  |
+| formatter             | 'prettier' \| 'biome'                  | Specify the formatter used for the generated d.ts files. When set to `biome`, install `@biomejs/js-api` and `@biomejs/wasm-nodejs` as devDependencies. (default: `prettier`)                                                                                                                                                                                          |
 | useNamedExport        | boolean                                | Output also in named export.(default: false)                                                                                                                                                                                                                                                                                                                          |
 | legacyFileFormat      | boolean                                | Use legacy file naming format. If `true`, generates `*.scss.d.ts` (legacy). If `false`, generates `*.d.scss.ts` (TypeScript 5 compatible). (default: `false`)                                                                                                                                                                                                         |
 
@@ -46,6 +47,20 @@ import sassDts from 'vite-plugin-sass-dts'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [sassDts()],
+})
+```
+
+## Format with Biome
+
+The generated d.ts files are formatted with prettier by default. To format them with [Biome](https://biomejs.dev/) instead, set the `formatter` option and install the Biome JavaScript API packages.
+
+```bash
+npm i -D @biomejs/js-api @biomejs/wasm-nodejs
+```
+
+```ts
+export default defineConfig({
+  plugins: [sassDts({ formatter: 'biome' })],
 })
 ```
 
