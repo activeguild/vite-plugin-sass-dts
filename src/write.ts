@@ -3,6 +3,7 @@ import { dirname, basename, isAbsolute } from 'node:path'
 import { type Options } from 'prettier'
 import { ContentReplacer, PluginOptions } from 'type'
 import { formatContent } from './format'
+import { generateDtsSourceMap, type OriginalPosition } from './sourcemap'
 import { getRelativePath } from './util'
 import path from 'path'
 import { mkdir } from 'node:fs/promises'
@@ -11,7 +12,8 @@ export const writeToFile = async (
   prettierOptions: Options,
   fileName: string,
   classNameKeys: Map<string, boolean>,
-  options?: PluginOptions
+  options?: PluginOptions,
+  classNamePositions?: Map<string, OriginalPosition>
 ) => {
   const baseName = path.basename(fileName)
   const typeName = getReplacerResult(baseName, options?.typeName)
@@ -52,7 +54,7 @@ export const writeToFile = async (
 
   const writePath = formatWriteFilePath(fileName, options)
 
-  const formattedOutputFileString = await formatContent(
+  let formattedOutputFileString = await formatContent(
     outputFileString,
     writePath,
     prettierOptions,
@@ -60,6 +62,32 @@ export const writeToFile = async (
   )
 
   await ensureDirectoryExists(writePath)
+
+  if (options?.sourceMap && classNamePositions?.size) {
+    const sourceMap = generateDtsSourceMap(
+      formattedOutputFileString,
+      writePath,
+      classNamePositions
+    )
+    if (sourceMap) {
+      if (!formattedOutputFileString.endsWith('\n')) {
+        formattedOutputFileString += '\n'
+      }
+      if (options.sourceMap === 'inline') {
+        const base64 = Buffer.from(sourceMap, 'utf-8').toString('base64')
+        formattedOutputFileString += `//# sourceMappingURL=data:application/json;base64,${base64}\n`
+      } else {
+        const mapFileName = `${basename(writePath)}.map`
+        formattedOutputFileString += `//# sourceMappingURL=${mapFileName}\n`
+        writeFile(`${writePath}.map`, sourceMap, (err) => {
+          if (err) {
+            console.log(err)
+            throw err
+          }
+        })
+      }
+    }
+  }
 
   writeFile(writePath, `${formattedOutputFileString}`, (err) => {
     if (err) {

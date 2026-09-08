@@ -1,6 +1,12 @@
 import Sass from 'sass-embedded'
 import { getPreprocessorOptions } from './options'
-import type { AdditionalData, CSS, CssUrlReplacer, FinalConfig } from './type'
+import type {
+  AdditionalData,
+  CSS,
+  CssUrlReplacer,
+  FinalConfig,
+  RawSourceMap,
+} from './type'
 import { createRequire } from 'node:module'
 import { Alias, normalizePath } from 'vite'
 import path from 'path'
@@ -18,7 +24,8 @@ const _require = import.meta.url ? createRequire(import.meta.url) : require
 export const parseCss = async (
   file: Buffer,
   fileName: string,
-  config: FinalConfig
+  config: FinalConfig,
+  needSourceMap = false
 ): Promise<CSS> => {
   const sass = loadSassPreprocessor(config)
 
@@ -215,12 +222,29 @@ export const parseCss = async (
         ...findNodeModulesPaths(config.root),
       ],
       syntax: fileName.endsWith('.sass') ? 'indented' : 'scss',
+      sourceMap: needSourceMap,
     }
 
     const result = await sass.compileStringAsync(data, sassOptions)
     const splitted = result.css.toString().split(SPLIT_STR)
-    return { localStyle: splitted[1] || '', globalStyle: splitted[0] }
+    const css: CSS = { localStyle: splitted[1] || '', globalStyle: splitted[0] }
+    if (needSourceMap && result.sourceMap) {
+      css.css = result.css.toString()
+      css.sourceMap = result.sourceMap as unknown as RawSourceMap
+      css.entryLineOffset = countPrependedLines(data)
+    }
+    return css
   }
+}
+
+// Number of lines the compiled string has before the entry file's own
+// content (additionalData plus the split marker); mapped positions whose
+// source is the entry file must be shifted back by this amount.
+const countPrependedLines = (data: string): number => {
+  const index = data.indexOf(SPLIT_STR)
+  if (index < 0) return 0
+  const prefix = data.slice(0, index + SPLIT_STR.length)
+  return prefix.split('\n').length - 1
 }
 
 // Collect every existing `node_modules` directory from the project root up

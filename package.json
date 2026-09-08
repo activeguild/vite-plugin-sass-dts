@@ -50,7 +50,8 @@
   },
   "homepage": "https://github.com/activeguild/vite-plugin-sass-dts#readme",
   "dependencies": {
-    "postcss-js": "^4.0.1"
+    "postcss-js": "^4.0.1",
+    "source-map-js": "^1.2.1"
   },
   "devDependencies": {
     "@biomejs/js-api": "^6.0.0",

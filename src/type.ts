@@ -38,9 +38,32 @@ export type PluginOptions = {
   prettierFilePath?: string
   useNamedExport?: boolean
   legacyFileFormat?: boolean
+  // Emit a TypeScript declaration map so "Go to Definition" jumps from the
+  // d.ts keys to the scss selectors. 'file' writes `<d.ts>.map` next to the
+  // d.ts; 'inline' embeds it as a base64 data uri. Modern sass api only.
+  sourceMap?: 'inline' | 'file'
 }
 
-export type CSS = { localStyle: string; globalStyle?: string }
+export type CSS = {
+  localStyle: string
+  globalStyle?: string
+  // Present only when parseCss is asked for a source map (modern api):
+  // the full generated css, sass's raw source map, and the number of
+  // lines prepended to the entry file's content (additionalData + marker).
+  css?: string
+  sourceMap?: RawSourceMap
+  entryLineOffset?: number
+}
+
+export type RawSourceMap = {
+  version: number | string
+  file?: string
+  sourceRoot?: string
+  sources: string[]
+  sourcesContent?: (string | null)[]
+  names: string[]
+  mappings: string
+}
 
 export type CSSJSObj = Record<
   string,

@@ -1,9 +1,15 @@
 import fs from 'fs'
+import { pathToFileURL } from 'node:url'
 import { parse } from 'postcss'
 import { objectify } from 'postcss-js'
 import { parseCss } from './css'
 import { extractClassNameKeys } from './extract'
 import { getParseCase } from './options'
+import {
+  extractClassNamePositions,
+  resolveOriginalPositions,
+  type OriginalPosition,
+} from './sourcemap'
 import type { CSS, FinalConfig, PluginOptions } from './type'
 import { isSassException } from './util'
 import { writeToFile } from './write'
@@ -21,13 +27,32 @@ export const main = (
         try {
           const css: CSS = fileName.endsWith('.css')
             ? { localStyle: file.toString() }
-            : await parseCss(file, fileName, config)
+            : await parseCss(file, fileName, config, !!option.sourceMap)
           const toParseCase = getParseCase(config)
           const classNameKeys = extractClassNameKeys(
             objectify(parse(css.localStyle)),
             toParseCase
           )
-          writeToFile(config.prettierOptions, fileName, classNameKeys, option)
+
+          // Class name positions traced back to the scss sources, shared by
+          // the local and global d.ts (each maps only the keys it contains).
+          let classNamePositions: Map<string, OriginalPosition> | undefined
+          if (option.sourceMap && css.css && css.sourceMap) {
+            classNamePositions = resolveOriginalPositions(
+              extractClassNamePositions(css.css, toParseCase),
+              css.sourceMap,
+              pathToFileURL(fileName).href,
+              css.entryLineOffset ?? 0
+            )
+          }
+
+          writeToFile(
+            config.prettierOptions,
+            fileName,
+            classNameKeys,
+            option,
+            classNamePositions
+          )
 
           if (
             !!css.globalStyle &&
@@ -43,7 +68,12 @@ export const main = (
               config.prettierOptions,
               option.global.outputFilePath,
               globalClassNameKeys,
-              { esmExport: option.esmExport, formatter: option.formatter }
+              {
+                esmExport: option.esmExport,
+                formatter: option.formatter,
+                sourceMap: option.sourceMap,
+              },
+              classNamePositions
             )
           }
         } catch (e) {

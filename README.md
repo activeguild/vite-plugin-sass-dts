@@ -39,6 +39,7 @@ This plugin requires Vite 7 or later (`vite: ^7 || ^8`). Sass files are compiled
 | formatter             | 'prettier' \| 'biome'                  | Specify the formatter used for the generated d.ts files. When set to `biome`, install `@biomejs/js-api` and `@biomejs/wasm-nodejs` as devDependencies. (default: `prettier`)                                                                                                                                                                                          |
 | useNamedExport        | boolean                                | Output also in named export.(default: false)                                                                                                                                                                                                                                                                                                                          |
 | legacyFileFormat      | boolean                                | Use legacy file naming format. If `true`, generates `*.scss.d.ts` (legacy). If `false`, generates `*.d.scss.ts` (TypeScript 5 compatible). (default: `false`)                                                                                                                                                                                                         |
+| sourceMap             | 'inline' \| 'file'                     | Emit a TypeScript declaration map for each generated d.ts, so "Go to Definition" on a class name jumps to the selector in the scss source. `'file'` writes a `<d.ts>.map` file next to the d.ts; `'inline'` embeds the map as a base64 data uri. Modern sass api only. (default: disabled)                                                                             |
 
 ## Add it to vite.config.ts
 
@@ -51,6 +52,18 @@ export default defineConfig({
   plugins: [sassDts()],
 })
 ```
+
+## Go to Definition into scss (declaration maps)
+
+With the `sourceMap` option, each generated d.ts carries a declaration map pointing back at the scss selectors, so "Go to Definition" (F12) on `classNames.foo` in your editor opens the scss rule that defines `.foo`.
+
+```ts
+export default defineConfig({
+  plugins: [sassDts({ sourceMap: 'file' })],
+})
+```
+
+Use `sourceMap: 'inline'` to embed the map into the d.ts itself instead of writing a separate `.map` file.
 
 ## Format with Biome
 
