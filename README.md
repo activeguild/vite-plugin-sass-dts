@@ -21,6 +21,8 @@ npm i -D vite-plugin-sass-dts
 For version 1.3.27 or later, please use the latest [sass-embedded](https://www.npmjs.com/package/sass-embedded) package;
 we have confirmed that it does not work with the [sass](https://www.npmjs.com/package/sass) package.
 
+This plugin requires Vite 7 or later (`vite: ^7 || ^8`). Sass files are compiled with the modern Sass API (`modern` / `modern-compiler`) by default. The legacy Sass API (`api: 'legacy'`) is no longer supported since Vite 7.
+
 ## Options
 
 | Parameter             | Type                                   | Description                                                                                                                                                                                                                                                                                                                                                           |
@@ -30,8 +32,8 @@ we have confirmed that it does not work with the [sass](https://www.npmjs.com/pa
 | global.outputFilePath | string                                 | Specify the file that outputs the global common style with an absolute path.Relative paths will be supported.                                                                                                                                                                                                                                                         |
 | typeName.replacement  | string \| (fileName: string) => string | Type name can be changed to any value. (default is the classname key as a string. e.g. `theClassName: 'theClassName';`)                                                                                                                                                                                                                                               |
 | exportName.replacement  | string \| (fileName: string) => string | Export name can be changed to any value. (default is 'classNames'. e.g. `declare const classNames: { ... };`)                                                                                                                                                                                                                                               |
-| outputDir             | string                                 | An absolute path to the output directory. If undefined, declaration files will be generated in the source directories. `)                                                                                                                                                                                                                                             |
-| sourceDir             | string                                 | An absolute path to your source code directory. The plugin will replace this path with `outputDir` option when writing declaration files. `)                                                                                                                                                                                                                          |
+| outputDir             | string                                 | An absolute path to the output directory. If undefined, declaration files will be generated in the source directories.                                                                                                                                                                                                                                                |
+| sourceDir             | string                                 | An absolute path to your source code directory. The plugin will replace this path with `outputDir` option when writing declaration files.                                                                                                                                                                                                                             |
 | esmExport             | boolean                                | Specify dts export type. If enabled, going to use ESM style export `export default ...`. Otherwise `export = ...`.                                                                                                                                                                                                                                                    |
 | prettierFilePath      | string                                 | Specify the path to the prettier configuration file.                                                                                                                                                                                                                                                                                                                  |
 | formatter             | 'prettier' \| 'biome'                  | Specify the formatter used for the generated d.ts files. When set to `biome`, install `@biomejs/js-api` and `@biomejs/wasm-nodejs` as devDependencies. (default: `prettier`)                                                                                                                                                                                          |
@@ -79,19 +81,13 @@ import sassDts from 'vite-plugin-sass-dts'
 import path from 'path'
 
 export default defineConfig({
+  resolve: {
+    alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
+  },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/styles" as common;`,
-        importer(...args) {
-          if (args[0] !== '@/styles') {
-            return
-          }
-
-          return {
-            file: `${path.resolve(__dirname, './src/assets/styles')}`,
-          }
-        },
+        additionalData: `@use "@/assets/styles" as common;`,
       },
     },
   },
