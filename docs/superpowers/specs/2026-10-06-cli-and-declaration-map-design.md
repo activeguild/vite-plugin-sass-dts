@@ -26,7 +26,7 @@
 ### 変更内容
 
 - `src/generate.ts` を新設する。
-  - `generateDts(fileName: string, ctx: { config: FinalConfig; option: PluginOptions }): Promise<GeneratedFile[]>`
+  - `generateDts(fileName: string, config: FinalConfig, option: PluginOptions): Promise<GeneratedFile[]>`（既存の `main()` と同じ引数順）
   - `type GeneratedFile = { path: string; content: string }`
   - ソースの読み込みと内容生成だけを行い、書き込みはしない。
   - グローバル型ファイルを生成する設定（`global.generate` と `global.outputFilePath`）の場合は、その内容も戻り値に含める。
