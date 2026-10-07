@@ -10,4 +10,5 @@ example
 .eslintrc.cjs
 .prettierrc.cjs
 tsconfig.json
-turbo.jsondocs
+turbo.json
+docs
