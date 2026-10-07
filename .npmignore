@@ -11,3 +11,4 @@ example
 .prettierrc.cjs
 tsconfig.json
 turbo.json
+docs

@@ -1,61 +1,23 @@
-import fs from 'fs'
-import { parse } from 'postcss'
-import { objectify } from 'postcss-js'
-import { parseCss } from './css'
-import { extractClassNameKeys } from './extract'
-import { getParseCase } from './options'
-import type { CSS, FinalConfig, PluginOptions } from './type'
+import { generateDts } from './generate'
+import type { FinalConfig, PluginOptions } from './type'
 import { isSassException } from './util'
-import { writeToFile } from './write'
+import { writeGeneratedFiles } from './write'
 
-export const main = (
+export const main = async (
   fileName: string,
   config: FinalConfig,
   option: PluginOptions
-) => {
+): Promise<void> => {
   try {
-    fs.readFile(fileName, async (err, file) => {
-      if (err) {
-        console.error(err)
-      } else {
-        try {
-          const css: CSS = fileName.endsWith('.css')
-            ? { localStyle: file.toString() }
-            : await parseCss(file, fileName, config)
-          const toParseCase = getParseCase(config)
-          const classNameKeys = extractClassNameKeys(
-            objectify(parse(css.localStyle)),
-            toParseCase
-          )
-          writeToFile(config.prettierOptions, fileName, classNameKeys, option)
-
-          if (
-            !!css.globalStyle &&
-            option.global?.generate &&
-            option.global?.outputFilePath
-          ) {
-            const globalClassNameKeys = extractClassNameKeys(
-              objectify(parse(css.globalStyle)),
-              toParseCase
-            )
-
-            writeToFile(
-              config.prettierOptions,
-              option.global.outputFilePath,
-              globalClassNameKeys,
-              { esmExport: option.esmExport, formatter: option.formatter }
-            )
-          }
-        } catch (e) {
-          if (isSassException(e)) {
-            if (e.name !== fileName) {
-              console.error('e :>> ', e)
-            }
-          }
-        }
-      }
-    })
+    const files = await generateDts(fileName, config, option)
+    await writeGeneratedFiles(files)
   } catch (e) {
-    console.error('e :>> ', e)
+    if (isSassException(e)) {
+      if (e.name !== fileName) {
+        console.error('e :>> ', e)
+      }
+    } else {
+      console.error('e :>> ', e)
+    }
   }
 }

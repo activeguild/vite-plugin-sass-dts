@@ -1,13 +1,22 @@
-import { mkdtempSync, readFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  statSync,
+  utimesSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import {
+  buildDtsContent,
   formatExportType,
   formatExportTypeFileName,
   formatWriteFileName,
   formatWriteFilePath,
   getReplacerResult,
+  writeGeneratedFiles,
   writeToFile,
 } from './write'
 
@@ -172,5 +181,79 @@ describe('writeToFile', () => {
     // biome defaults to tab indentation, which proves biome ran
     expect(content).toMatch(/\treadonly foo: "foo";/)
     expect(content).toContain('export = classNames;')
+  })
+})
+
+describe('buildDtsContent', () => {
+  const prettierOptions = { filepath: '*.d.ts' }
+
+  it('returns the formatted d.ts content without writing a file', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'vite-plugin-sass-dts-'))
+    const fileName = path.join(dir, 'style.module.scss')
+
+    const content = await buildDtsContent(
+      prettierOptions,
+      fileName,
+      new Map([['Root', true]])
+    )
+
+    expect(content).toContain(`readonly Root: "Root";`)
+    expect(content).toContain('export = classNames;')
+    expect(existsSync(path.join(dir, 'style.module.d.scss.ts'))).toBe(false)
+  })
+
+  it('imports the global class names when global.outputFilePath is set', async () => {
+    const content = await buildDtsContent(
+      prettierOptions,
+      '/project/src/App.module.scss',
+      new Map([['foo', true]]),
+      {
+        global: {
+          generate: true,
+          outputFilePath: '/project/src/style.d.ts',
+        },
+      }
+    )
+
+    expect(content).toContain(`import globalClassNames from "./style.d";`)
+    expect(content).toContain('typeof globalClassNames &')
+  })
+})
+
+describe('writeGeneratedFiles', () => {
+  it('creates missing directories and writes each file', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'vite-plugin-sass-dts-'))
+    const a = path.join(dir, 'nested', 'a.d.scss.ts')
+    const b = path.join(dir, 'b.d.ts')
+
+    await writeGeneratedFiles([
+      { path: a, content: 'A' },
+      { path: b, content: 'B' },
+    ])
+
+    expect(readFileSync(a, 'utf-8')).toBe('A')
+    expect(readFileSync(b, 'utf-8')).toBe('B')
+  })
+
+  it('does not touch a file whose content is unchanged', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'vite-plugin-sass-dts-'))
+    const file = path.join(dir, 'a.d.scss.ts')
+    writeFileSync(file, 'same')
+    const old = new Date('2020-01-01T00:00:00Z')
+    utimesSync(file, old, old)
+
+    await writeGeneratedFiles([{ path: file, content: 'same' }])
+
+    expect(statSync(file).mtimeMs).toBe(old.getTime())
+  })
+
+  it('overwrites a file whose content changed', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'vite-plugin-sass-dts-'))
+    const file = path.join(dir, 'a.d.scss.ts')
+    writeFileSync(file, 'old')
+
+    await writeGeneratedFiles([{ path: file, content: 'new' }])
+
+    expect(readFileSync(file, 'utf-8')).toBe('new')
   })
 })
