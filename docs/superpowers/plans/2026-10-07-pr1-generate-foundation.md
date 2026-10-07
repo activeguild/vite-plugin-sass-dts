@@ -15,15 +15,17 @@
 ## 事前の注意
 
 - この環境では `npx` と `npm` が壊れている（pnpm 管理の Node のパスが存在しない）。コマンドは `./node_modules/.bin/<tool>` で直接実行すること。
-- husky の pre-commit（中身は `npx lint-staged` だけ）も `npx` を使うため失敗する。各タスクのコミットは、フックと同じ処理を手動で実行してから `--no-verify` で行う。
+- husky の pre-commit（中身は `npx lint-staged` だけ）も `npx` を使うため失敗する。また lint-staged の設定は `eslint . --fix` / `prettier . --write` とリポジトリ全体を対象にしており、手動で実行すると README やロックファイルまで書き換えてしまう。そのため各タスクのコミットは、**コミットする ts ファイルだけ**に eslint と prettier をかけてから `--no-verify` で行う。
 
 ```bash
+./node_modules/.bin/eslint --fix <ts files>
+./node_modules/.bin/prettier --write <ts files>
 git add <files>
-./node_modules/.bin/lint-staged
 git commit --no-verify -m "<message>"
+git status --short   # 既存の未追跡ファイル 2 つ以外に変更が残っていないこと
 ```
 
-  lint-staged が失敗した場合（eslint エラーなど）はコミットせず、原因を直してからやり直す。以降の各タスクの「コミットする」ステップはすべてこの手順で行う。
+  eslint がエラーを出した場合はコミットせず、原因を直してからやり直す。以降の各タスクの「コミットする」ステップはすべてこの手順で行う。
 - 着手前の基準値：`./node_modules/.bin/vitest run` が 59 件すべて成功し、`./node_modules/.bin/tsc --noEmit -p .` もエラーなし。
 - 既存の挙動として、prettier 設定の解決に `config.root`（ディレクトリ）を渡しているため、プロジェクト直下の `.prettierrc` は読まれない。**この PR では挙動を変えない**（別タスクで対応する）。
 - 作業ブランチ：`docs/cli-and-declaration-map-spec` から `feat/generate-foundation` を切って作業する。
