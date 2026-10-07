@@ -1,8 +1,9 @@
-import { mkdtempSync, readFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import {
+  buildDtsContent,
   formatExportType,
   formatExportTypeFileName,
   formatWriteFileName,
@@ -172,5 +173,41 @@ describe('writeToFile', () => {
     // biome defaults to tab indentation, which proves biome ran
     expect(content).toMatch(/\treadonly foo: "foo";/)
     expect(content).toContain('export = classNames;')
+  })
+})
+
+describe('buildDtsContent', () => {
+  const prettierOptions = { filepath: '*.d.ts' }
+
+  it('returns the formatted d.ts content without writing a file', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'vite-plugin-sass-dts-'))
+    const fileName = path.join(dir, 'style.module.scss')
+
+    const content = await buildDtsContent(
+      prettierOptions,
+      fileName,
+      new Map([['Root', true]])
+    )
+
+    expect(content).toContain(`readonly Root: "Root";`)
+    expect(content).toContain('export = classNames;')
+    expect(existsSync(path.join(dir, 'style.module.d.scss.ts'))).toBe(false)
+  })
+
+  it('imports the global class names when global.outputFilePath is set', async () => {
+    const content = await buildDtsContent(
+      prettierOptions,
+      '/project/src/App.module.scss',
+      new Map([['foo', true]]),
+      {
+        global: {
+          generate: true,
+          outputFilePath: '/project/src/style.d.ts',
+        },
+      }
+    )
+
+    expect(content).toContain(`import globalClassNames from "./style.d";`)
+    expect(content).toContain('typeof globalClassNames &')
   })
 })

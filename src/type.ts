@@ -41,6 +41,7 @@ export type PluginOptions = {
 }
 
 export type CSS = { localStyle: string; globalStyle?: string }
+export type GeneratedFile = { path: string; content: string }
 
 export type CSSJSObj = Record<
   string,

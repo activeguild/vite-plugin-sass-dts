@@ -1,18 +1,17 @@
-import { writeFile } from 'node:fs'
+import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { dirname, basename, isAbsolute } from 'node:path'
 import { type Options } from 'prettier'
-import { ContentReplacer, PluginOptions } from 'type'
+import type { ContentReplacer, GeneratedFile, PluginOptions } from './type'
 import { formatContent } from './format'
 import { getRelativePath } from './util'
 import path from 'path'
-import { mkdir } from 'node:fs/promises'
 
-export const writeToFile = async (
+export const buildDtsContent = async (
   prettierOptions: Options,
   fileName: string,
   classNameKeys: Map<string, boolean>,
   options?: PluginOptions
-) => {
+): Promise<string> => {
   const baseName = path.basename(fileName)
   const typeName = getReplacerResult(baseName, options?.typeName)
   const exportName =
@@ -50,23 +49,42 @@ export const writeToFile = async (
     }
   }
 
-  const writePath = formatWriteFilePath(fileName, options)
-
-  const formattedOutputFileString = await formatContent(
+  return formatContent(
     outputFileString,
-    writePath,
+    formatWriteFilePath(fileName, options),
     prettierOptions,
     options?.formatter
   )
+}
 
-  await ensureDirectoryExists(writePath)
+export const writeToFile = async (
+  prettierOptions: Options,
+  fileName: string,
+  classNameKeys: Map<string, boolean>,
+  options?: PluginOptions
+) => {
+  const content = await buildDtsContent(
+    prettierOptions,
+    fileName,
+    classNameKeys,
+    options
+  )
+  await writeGeneratedFiles([
+    { path: formatWriteFilePath(fileName, options), content },
+  ])
+}
 
-  writeFile(writePath, `${formattedOutputFileString}`, (err) => {
-    if (err) {
-      console.log(err)
-      throw err
-    }
-  })
+export const writeGeneratedFiles = async (files: GeneratedFile[]) => {
+  await Promise.all(
+    files.map(async ({ path: filePath, content }) => {
+      const current = await readFile(filePath, 'utf-8').catch(() => undefined)
+      if (current === content) {
+        return
+      }
+      await ensureDirectoryExists(filePath)
+      await writeFile(filePath, content)
+    })
+  )
 }
 
 export const getReplacerResult = (
